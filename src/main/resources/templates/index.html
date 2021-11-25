@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="fragments/header :: commonHead">
+    <title id="title">Project planner - Home</title>
+</head>
+<body>
+<header th:replace="fragments/header :: commonHeader(activePage='home')"></header>
+<div class="container">
+    <div class="alert alert-success">
+        Welcome
+    </div>
+</div>
+<footer th:replace="fragments/footer :: commonFooter"></footer>
+</body>
+</html>

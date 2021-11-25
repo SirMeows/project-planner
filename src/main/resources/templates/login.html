@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: commonHead">
+    <title id="title">Wishlist - Login</title>
+</head>
+<body>
+<header th:replace="fragments/header :: commonHeader(activePage='login')"></header>
+<div class="container">
+    <h1 class="text-center mb-5">Please login</h1>
+    <div class="alert alert-success" th:unless="${param.logout}">
+        Not a user yet? <a href="/register">Register</a>
+    </div>
+    <div th:if="${param.error}" class="alert alert-danger">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}" class="alert alert-success">
+        You have been logged out.
+    </div>
+    <form th:replace="fragments/login-form :: login-form"></form>
+</div>
+<footer th:replace="fragments/footer :: commonFooter"></footer>
+</body>
+</html>
