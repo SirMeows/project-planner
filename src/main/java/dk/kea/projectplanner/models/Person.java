@@ -6,15 +6,17 @@ public class Person {
     private String lastName;
     private User user;
 
-    public Person(long id, String firstName, String lastName) {
+    public Person(String firstName, String lastName, User user) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.user = user;
+    }
+
+    public Person(long id, String firstName, String lastName, User user) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.user = user;
     }
 
     public long getId() {

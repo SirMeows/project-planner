@@ -1,4 +1,4 @@
 package dk.kea.projectplanner.models;
 
-public class SubTask extends ActivityImpl{
+public class SubTask extends Activity {
 }
