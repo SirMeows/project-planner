@@ -18,7 +18,8 @@
                 <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
                 <span class="fs-4">Project planner</span>
             </a>
-            <!-- TOP MENU -->
+        <!-- TOP MENU -->
+        <nav>
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a th:href="@{/}" class="nav-link" th:classappend="${#strings.equals(activePage,'home')} ? 'active'">Home</a>
@@ -30,8 +31,10 @@
                     <a th:href="@{/project/create}" class="nav-link" th:classappend="${#strings.equals(activePage,'add-project')} ? 'active'">Add Project</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/register" class="nav-link">Register</a>
+                    <a th:href="@{/gantt-week}" class="nav-link" th:classappend="${#strings.equals(activePage,'gantt-chart')} ? 'active'">Gantt Chart</a>
                 </li>
+                <li class="nav-item">
+                    <a href="/register" class="nav-link">Register</a>
                 </li>
             </ul>
         </nav>
