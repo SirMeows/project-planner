@@ -1,6 +1,6 @@
 package dk.kea.projectplanner.repositories;
 
-import dk.kea.projectplanner.models.SubProject;
+import dk.kea.projectplanner.models.SubProjectModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -21,5 +21,5 @@ public interface SubProjectRepository {
             @Result(property="actualStartDate", column="actual_start_date"),
             @Result(property="deadline", column="deadline"),
             @Result(property="actualEndDate", column="actual_end_date")})
-    List<SubProject> findAllSubProjects();
+    List<SubProjectModel> findAllSubProjects();
 }

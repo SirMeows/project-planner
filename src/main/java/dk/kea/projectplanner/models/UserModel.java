@@ -2,7 +2,7 @@ package dk.kea.projectplanner.models;
 
 import dk.kea.projectplanner.validation.ValidPassword;
 
-public class User {
+public class UserModel {
     private long id;
 
     //TODO: Find Maven dependency and Add @NotNull

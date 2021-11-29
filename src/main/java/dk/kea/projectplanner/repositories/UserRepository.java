@@ -1,6 +1,6 @@
 package dk.kea.projectplanner.repositories;
 
-import dk.kea.projectplanner.models.User;
+import dk.kea.projectplanner.models.UserModel;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 
@@ -12,38 +12,38 @@ public interface UserRepository {
         @Result(property="id", column="id"),
         @Result(property="username", column="username"),
         @Result(property="password", column="password")})
-    List<User> findAll();
+    List<UserModel> findAll();
 
     @Select("SELECT * FROM user WHERE id = #{id}")
     @Results(value = {
         @Result(property="id", column="id"),
         @Result(property="username", column="username"),
         @Result(property="password", column="password")})
-    User findUserById(long id);
+    UserModel findUserById(long id);
 
     @Select("SELECT * FROM user WHERE username = #{username}")
     @Results(value = {
             @Result(property="id", column="id"),
             @Result(property="username", column="username"),
             @Result(property="password", column="password")})
-    User findUserByUsername(String username);
+    UserModel findUserByUsername(String username);
 
     @Delete("DELETE FROM user WHERE id = #{id}")
     int deleteById(long id);
 
     @Update("UPDATE user SET password=#{password} WHERE id=#{id}")
-    int updatePassword(User user);
+    int updatePassword(UserModel userModel);
 
     @Insert("INSERT INTO user (id, username, password) VALUES (#{id}, #{username}, #{password})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
-    void insertUser(User user);
+    void insertUser(UserModel userModel);
 
     @Select("SELECT * FROM user WHERE username LIKE #{searchTerm}")
     @Results(value = {
             @Result(property="id", column="id"),
             @Result(property="username", column="username"),
             @Result(property="password", column="password")})
-    List<User> searchUserByUsername(String searchTerm);
+    List<UserModel> searchUserByUsername(String searchTerm);
 }
 
 //@org.apache.ibatis.annotations.

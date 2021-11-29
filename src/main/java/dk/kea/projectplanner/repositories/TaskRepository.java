@@ -1,6 +1,6 @@
 package dk.kea.projectplanner.repositories;
 
-import dk.kea.projectplanner.models.Task;
+import dk.kea.projectplanner.models.TaskModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -21,5 +21,5 @@ public interface TaskRepository {
             @Result(property="actualStartDate", column="actual_start_date"),
             @Result(property="deadline", column="deadline"),
             @Result(property="actualEndDate", column="actual_end_date")})
-    List<Task> findAllTasks();
+    List<TaskModel> findAllTasks();
 }

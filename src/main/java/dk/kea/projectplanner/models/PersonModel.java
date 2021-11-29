@@ -1,22 +1,22 @@
 package dk.kea.projectplanner.models;
 
-public class Person {
+public class PersonModel {
     private long id;
     private String firstName;
     private String lastName;
-    private User user;
+    private UserModel userModel;
 
-    public Person(String firstName, String lastName, User user) {
+    public PersonModel(String firstName, String lastName, UserModel userModel) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.user = user;
+        this.userModel = userModel;
     }
 
-    public Person(long id, String firstName, String lastName, User user) {
+    public PersonModel(long id, String firstName, String lastName, UserModel userModel) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.user = user;
+        this.userModel = userModel;
     }
 
     public long getId() {
@@ -43,11 +43,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public User getUser() {
-        return user;
+    public UserModel getUser() {
+        return userModel;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserModel userModel) {
+        this.userModel = userModel;
     }
 }
