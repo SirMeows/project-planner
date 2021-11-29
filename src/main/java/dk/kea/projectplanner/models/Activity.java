@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 public abstract class Activity {
     private long id;
+    private long activityId;
     private String name;
+    private long dateTimeId;
     private LocalDateTime plannedStartDate;
     private LocalDateTime actualStartDate;
     private LocalDateTime deadline;
