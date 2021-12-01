@@ -37,7 +37,9 @@ public class ProjectServiceIntegrationTest {
     private ProjectService projectService;
 
     @Before
-    public void setUp(){}
+    public void setUp(){
+        // Can create ProjectModel object here to make sure there is something in the db for testing methods that rely on db not being empty
+    }
 
     @Test
     @Transactional // Automatically rolls back changes when test is done (fx. removes added row from db)
