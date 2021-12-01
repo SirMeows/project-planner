@@ -16,14 +16,24 @@ public class ProjectService {
     }
 
     @Transactional // Only executes this method if all parts succeed
-    void createProject(ProjectModel projectModel) {
+    ProjectModel createProject(ProjectModel projectModel) {
         projectRepos.createDateTime(projectModel);
         projectRepos.createActivity(projectModel);
         projectRepos.createProject(projectModel);
+        return projectModel; // Could query from db
     }
 
     @Transactional
-    void addSubProjectToCollection(ProjectModel projectModel, SubProjectModel subProjectModel) {
-        
+    void addSubProjectToProject(ProjectModel projectModel, SubProjectModel subProjectModel) {
+        projectRepos.addSubProjectToProject(projectModel, subProjectModel);
+    }
+
+    //TODO: Can this be pulled to a superclass to be used by all activities?
+    @Transactional
+    void updateDateTime(ProjectModel projectModel) {
+        projectRepos.updateActualEndDate(projectModel);
+        projectRepos.updateDeadline(projectModel);
+        projectRepos.updateActualStartDate(projectModel);
+        projectRepos.updatePlannedStartDate(projectModel);
     }
 }

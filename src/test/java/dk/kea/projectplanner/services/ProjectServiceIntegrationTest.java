@@ -3,6 +3,8 @@ package dk.kea.projectplanner.services;
 
 import dk.kea.projectplanner.ProjectPlannerApplication;
 import dk.kea.projectplanner.models.ProjectModel;
+import dk.kea.projectplanner.models.SubProjectModel;
+import dk.kea.projectplanner.repositories.SubProjectRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,13 +13,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.AssertTrue;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
@@ -35,6 +35,8 @@ public class ProjectServiceIntegrationTest {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private SubProjectService subProjectService;
 
     @Before
     public void setUp(){
@@ -43,7 +45,7 @@ public class ProjectServiceIntegrationTest {
 
     @Test
     @Transactional // Automatically rolls back changes when test is done (fx. removes added row from db)
-    public void actualTest(){
+    public void createProjectTest(){
         assertNotNull(projectService);
         var projectModel = createProjectModel();
 
@@ -64,7 +66,24 @@ public class ProjectServiceIntegrationTest {
         return p;
     }
 
-    @After
-    public void tearDown(){}
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void addSubProjectTest() {
+        var projectModel = projectService.createProject(createProjectModel());
+        var subProjectModel = subProjectService.createSubProject(createSubProjectModel());
 
+        projectService.addSubProjectToProject(projectModel, subProjectModel);
+        assertTrue(projectModel.getSubProjects().contains(subProjectModel));
+    }
+
+    private SubProjectModel createSubProjectModel() {
+        var s = new SubProjectModel();
+        s.setActualEndDate(BASE_DATE);
+        s.setActualStartDate(BASE_DATE);
+        s.setDeadline(BASE_DATE);
+        s.setPlannedStartDate(BASE_DATE);
+        s.setName("testsubprjname");
+        return s;
+    }
 }

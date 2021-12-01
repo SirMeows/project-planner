@@ -59,4 +59,17 @@ public interface SubProjectRepository {
 
     @Update("UPDATE date_time SET actual_end_date = #{actualEndDate} WHERE date_time_id = #{dateTimeId}")
     int updateActualEndDate(SubProjectModel subProjectModel);
+
+    @Insert("INSERT INTO date_time (date_time_id, planned_start_date, actual_start_date, deadline, actual_end_date)" +
+            "VALUES (#{dateTimeId}, #{plannedStartDate}, #{actualStartDate}, #{deadline}, #{actualEndDate})")
+    @Options(useGeneratedKeys = true, keyColumn = "date_time_id", keyProperty = "dateTimeId")
+    void createDateTime(SubProjectModel subProjectModel);
+
+    @Insert("INSERT INTO activity (activity_id, name, date_time_id) VALUES (#{activityId}, #{name}, #{dateTimeId});")
+    @Options(useGeneratedKeys = true, keyColumn = "activity_id", keyProperty = "activityId")
+    void createActivity(SubProjectModel subProjectModel);
+
+    @Insert("INSERT INTO subproject (subproject_id, activity_id) VALUES (#{id}, #{activityId})")
+    @Options(useGeneratedKeys = true, keyColumn = "subproject_id", keyProperty = "id")
+    void createSubProject(SubProjectModel subProjectModel);
 }
