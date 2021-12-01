@@ -75,17 +75,17 @@
                     data-toggle="popover" th:attr="data-bs-content='Display additional info on activity here'"
                     data-bs-placement="bottom" th:style=
                     "'background:'+${gu.activityColors[iterStat.index % 9]}+';grid-row:'+${iterStat.count + 1}+
-                ';grid-column:'+${activity.calcOffsetHours()}+' / span '+
-                ${activity.calcSpanHours()}+';'"
+                ';grid-column:'+${gu.calcOffsetHours(activity)}+' / span '+
+                ${gu.calcSpanHours(activity)}+';'"
             ></button>
     </div>
 </div>
 <footer th:replace="fragments/footer :: commonFooter"></footer>
 <script>
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
+    const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
-    })
+    });
 </script>
 </body>
 </html>

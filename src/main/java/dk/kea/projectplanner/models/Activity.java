@@ -12,6 +12,12 @@ public abstract class Activity {
     private LocalDateTime deadline;
     private LocalDateTime actualEndDate;
 
+    public Activity(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
+        this.name = name;
+        this.plannedStartDate = plannedStartDate;
+        this.deadline = deadline;
+    }
+
     public long getId() {
         return id;
     }
