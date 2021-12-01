@@ -3,6 +3,7 @@ package dk.kea.projectplanner.services;
 import dk.kea.projectplanner.models.ProjectModel;
 import dk.kea.projectplanner.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProjectService {
@@ -13,6 +14,7 @@ public class ProjectService {
         this.projectRepos = projectRepos;
     }
 
+    @Transactional // Only executes this method if all parts succeed
     void createProject(ProjectModel projectModel) {
         projectRepos.createDateTime(projectModel);
         projectRepos.createActivity(projectModel);
