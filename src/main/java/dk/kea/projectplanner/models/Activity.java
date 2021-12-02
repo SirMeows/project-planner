@@ -18,6 +18,9 @@ public abstract class Activity {
         this.deadline = deadline;
     }
 
+    public Activity() {
+    }
+
     public long getId() {
         return id;
     }

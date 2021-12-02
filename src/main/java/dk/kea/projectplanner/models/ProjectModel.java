@@ -10,6 +10,9 @@ public class ProjectModel extends Activity {
         super(name, plannedStartDate, deadline);
     }
 
+    public ProjectModel() {
+    }
+
     public List<SubProjectModel> getSubProjects() {
         return subProjects;
     }
