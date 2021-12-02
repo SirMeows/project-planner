@@ -16,7 +16,17 @@ public class ProjectModel extends Activity {
     public ProjectModel() {
     }
 
-    public List<SubProjectModel> getSubProjects() {
+    protected List<SubProjectModel> getSubProjects() {
         return subProjects;
     }
+
+    public void addSubProject(SubProjectModel subProjectModel) {
+        subProjects.add(subProjectModel);
+    }
+
+    public boolean containsSubProject(SubProjectModel subProjectModel) {
+        return subProjects.contains(subProjectModel);
+    }
 }
+
+// Use map instead of list, can do contains on id (key) instead of checking the whole list. Need to change query

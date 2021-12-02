@@ -24,8 +24,10 @@ public class ProjectService {
     }
 
     @Transactional
-    void addSubProjectToProject(ProjectModel projectModel, SubProjectModel subProjectModel) {
+    ProjectModel addSubProjectToProject(ProjectModel projectModel, SubProjectModel subProjectModel) {
         projectRepos.addSubProjectToProject(projectModel, subProjectModel);
+        projectModel.addSubProject(subProjectModel);
+        return projectModel;
     }
 
     //TODO: Can this be pulled to a superclass to be used by all activities?
