@@ -1,6 +1,7 @@
 package dk.kea.projectplanner.models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public abstract class Activity {
     private long id;
@@ -45,6 +46,7 @@ public abstract class Activity {
         return actualStartDate;
     }
 
+
     public LocalDateTime getDeadline() {
         return deadline;
     }
@@ -86,4 +88,19 @@ public abstract class Activity {
     }
 
     //TODO: If there is time, add Discipline to ActivityImpl and Person in order to find qualified personnel for activities
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return id == activity.id && activityId == activity.activityId && dateTimeId == activity.dateTimeId && Objects.equals(name, activity.name) && Objects.equals(plannedStartDate, activity.plannedStartDate) && Objects.equals(actualStartDate, activity.actualStartDate) && Objects.equals(deadline, activity.deadline) && Objects.equals(actualEndDate, activity.actualEndDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, activityId, name, dateTimeId, plannedStartDate, actualStartDate, deadline, actualEndDate);
+    }
 }

@@ -6,36 +6,55 @@ import dk.kea.projectplanner.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Service
 public class ProjectService {
 
-    private final ProjectRepository projectRepos;
+    private final ProjectRepository projectRepo;
 
     public ProjectService(ProjectRepository projectRepos) {
-        this.projectRepos = projectRepos;
+        this.projectRepo = projectRepos;
     }
 
     @Transactional // Only executes this method if all parts succeed
     ProjectModel createProject(ProjectModel projectModel) {
-        projectRepos.createDateTime(projectModel);
-        projectRepos.createActivity(projectModel);
-        projectRepos.createProject(projectModel);
+        projectRepo.createDateTime(projectModel);
+        projectRepo.createActivity(projectModel);
+        projectRepo.createProject(projectModel);
         return projectModel; // Could query from db
+    }
+
+    ProjectModel findProjectById(long id) {
+        return projectRepo.findById(id);
     }
 
     @Transactional
     ProjectModel addSubProjectToProject(ProjectModel projectModel, SubProjectModel subProjectModel) {
-        projectRepos.addSubProjectToProject(projectModel, subProjectModel);
+        projectRepo.addSubProjectToProject(projectModel, subProjectModel);
         projectModel.addSubProject(subProjectModel);
         return projectModel;
     }
 
-    //TODO: Can this be pulled to a superclass to be used by all activities?
+    ProjectModel populateSubprojects(long id) {
+        var projectModel = findProjectById(id);
+        projectModel.populateSubprojects(listToMap(projectRepo.findSubProjectsByProjectId(id)));
+        return projectModel;
+    }
+
+    private Map<Long, SubProjectModel> listToMap(List<SubProjectModel> subProjectModelList) {
+        return subProjectModelList.stream().collect(Collectors.toMap(SubProjectModel::getId, Function.identity()));
+    }
+
     @Transactional
     void updateDateTime(ProjectModel projectModel) {
-        projectRepos.updateActualEndDate(projectModel);
-        projectRepos.updateDeadline(projectModel);
-        projectRepos.updateActualStartDate(projectModel);
-        projectRepos.updatePlannedStartDate(projectModel);
+        projectRepo.updateActualEndDate(projectModel);
+        projectRepo.updateDeadline(projectModel);
+        projectRepo.updateActualStartDate(projectModel);
+        projectRepo.updatePlannedStartDate(projectModel);
     }
 }

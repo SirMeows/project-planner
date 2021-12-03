@@ -72,5 +72,4 @@ public interface ProjectRepository {
 
     @Select("SELECT * FROM subproject_view sv INNER JOIN project_subproject ps ON sv.subproject_id=ps.subproject_id WHERE project_id = #{id}")
     List<SubProjectModel> findSubProjectsByProjectId(long id);
-    // return map instead, change from List to Map in findById, find out how this works in ibatis(?), change in class
 }

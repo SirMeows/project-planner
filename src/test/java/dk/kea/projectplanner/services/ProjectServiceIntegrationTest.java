@@ -74,7 +74,7 @@ public class ProjectServiceIntegrationTest {
         var subProjectModel = subProjectService.createSubProject(createSubProjectModel());
 
         var updatedProject = projectService.addSubProjectToProject(projectModel, subProjectModel);
-
+        projectService.populateSubprojects(updatedProject.getId());
         assertTrue(updatedProject.containsSubProject(subProjectModel));
     }
 
