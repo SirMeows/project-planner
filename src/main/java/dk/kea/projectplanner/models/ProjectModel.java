@@ -20,7 +20,6 @@ public class ProjectModel extends Activity {
     }
 
     public boolean containsSubProject(SubProjectModel subProjectModel) {
-
         return subProjects.containsKey(subProjectModel.getId());
     }
 
