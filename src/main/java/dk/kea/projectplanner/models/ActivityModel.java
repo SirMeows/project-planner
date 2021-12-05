@@ -1,10 +1,9 @@
 package dk.kea.projectplanner.models;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Objects;
 
-public abstract class Activity {
+public abstract class ActivityModel {
     private long id;
     private long activityId;
     private String name;
@@ -14,13 +13,13 @@ public abstract class Activity {
     private LocalDateTime deadline;
     private LocalDateTime actualEndDate;
 
-    public Activity(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
+    public ActivityModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
         this.name = name;
         this.plannedStartDate = plannedStartDate;
         this.deadline = deadline;
     }
 
-    public Activity() {
+    public ActivityModel() {
     }
 
     public long getId() {
@@ -91,8 +90,8 @@ public abstract class Activity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Activity activity = (Activity) o;
-        return id == activity.id && activityId == activity.activityId && dateTimeId == activity.dateTimeId && Objects.equals(name, activity.name) && Objects.equals(plannedStartDate, activity.plannedStartDate) && Objects.equals(actualStartDate, activity.actualStartDate) && Objects.equals(deadline, activity.deadline) && Objects.equals(actualEndDate, activity.actualEndDate);
+        ActivityModel activityModel = (ActivityModel) o;
+        return id == activityModel.id && activityId == activityModel.activityId && dateTimeId == activityModel.dateTimeId && Objects.equals(name, activityModel.name) && Objects.equals(plannedStartDate, activityModel.plannedStartDate) && Objects.equals(actualStartDate, activityModel.actualStartDate) && Objects.equals(deadline, activityModel.deadline) && Objects.equals(actualEndDate, activityModel.actualEndDate);
     }
 
     @Override

@@ -2,10 +2,9 @@ package dk.kea.projectplanner.models;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class TaskModel extends Activity {
+public class TaskModel extends ActivityModel {
     private Map<Long,SubTaskModel> subTasks = new HashMap<>();
 
     public TaskModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {

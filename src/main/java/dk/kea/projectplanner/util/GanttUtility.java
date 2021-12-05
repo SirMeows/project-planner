@@ -1,6 +1,6 @@
 package dk.kea.projectplanner.util;
 
-import dk.kea.projectplanner.models.Activity;
+import dk.kea.projectplanner.models.ActivityModel;
 import dk.kea.projectplanner.models.ProjectModel;
 
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class GanttUtility {
     public int colSize;
     public LocalDateTime startDate, endDate;
     public String[] activityColors = new String[]{"#b03532", "#33a8a5","#30997a","#6a478f","#da6f2b","#3d8bb1","#e03f3f","#59a627","#4464a1"};
-    public List<Activity> activities = new ArrayList<>();
+    public List<ActivityModel> activities = new ArrayList<>();
     public List<LocalDateTime> days = new ArrayList<>();
     public TextStyle txtStyle = TextStyle.SHORT;
     public Locale locale = Locale.ENGLISH;
@@ -37,20 +37,20 @@ public class GanttUtility {
     public void calcStartAndEndDate() {
         LocalDateTime start = activities.get(0).getPlannedStartDate();
         LocalDateTime end = start;
-        for (Activity activity : activities) {
-            if (activity.getPlannedStartDate().isBefore(start)) start = activity.getPlannedStartDate();
-            if (activity.getDeadline().isAfter(end)) end = activity.getDeadline();
+        for (ActivityModel activityModel : activities) {
+            if (activityModel.getPlannedStartDate().isBefore(start)) start = activityModel.getPlannedStartDate();
+            if (activityModel.getDeadline().isAfter(end)) end = activityModel.getDeadline();
         }
         this.startDate = start;
         this.endDate = end;
     }
 
-    public long calcSpanHours(Activity activity) {
-        return activity.getPlannedStartDate().until( activity.getDeadline(), ChronoUnit.HOURS );
+    public long calcSpanHours(ActivityModel activityModel) {
+        return activityModel.getPlannedStartDate().until( activityModel.getDeadline(), ChronoUnit.HOURS );
     }
 
-    public long calcOffsetHours(Activity activity) {
-        long offset = (activity.getPlannedStartDate().getDayOfMonth()-1)*24 + activity.getPlannedStartDate().getHour();
+    public long calcOffsetHours(ActivityModel activityModel) {
+        long offset = (activityModel.getPlannedStartDate().getDayOfMonth()-1)*24 + activityModel.getPlannedStartDate().getHour();
         if (offset == 0) offset = 1;
         return offset;
     }

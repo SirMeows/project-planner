@@ -1,13 +1,13 @@
 package dk.kea.projectplanner.repositories;
 
-import dk.kea.projectplanner.models.Activity;
+import dk.kea.projectplanner.models.ActivityModel;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional// Only executes this method if all parts succeed
-public interface ActivityRepository <T extends Activity> {
+@Transactional// Only executes a method if all parts succeed
+public interface ActivityRepository <T extends ActivityModel> {
 
     @Update("UPDATE date_time SET planned_start_date = #{plannedStartDate} WHERE date_time_id = #{dateTimeId}")
     int updatePlannedStartDate(T activity);

@@ -1,11 +1,11 @@
 package dk.kea.projectplanner.services;
 
-import dk.kea.projectplanner.models.Activity;
+import dk.kea.projectplanner.models.ActivityModel;
 import dk.kea.projectplanner.repositories.ActivityRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public abstract class ActivityService <P extends Activity> {
+public abstract class ActivityService <P extends ActivityModel> {
 
     abstract ActivityRepository<P> getRepository();
 

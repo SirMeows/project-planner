@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SubProjectModel extends Activity {
+public class SubProjectModel extends ActivityModel {
     private Map<Long,TaskModel> tasks = new HashMap<>();
 
     public SubProjectModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
