@@ -19,11 +19,12 @@ public class ProjectModel extends Activity {
         subProjects.put(subProjectModel.getId(),subProjectModel);
     }
 
+    public void populateSubprojects(Map<Long,SubProjectModel> subProjects) {
+        subProjects = subProjects;
+    }
+
     public boolean containsSubProject(SubProjectModel subProjectModel) {
         return subProjects.containsKey(subProjectModel.getId());
     }
 
-    public void populateSubprojects(Map<Long,SubProjectModel> subProjectModelMap) {
-        subProjects = subProjectModelMap;
-    }
 }
