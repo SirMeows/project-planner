@@ -38,6 +38,16 @@ public class GanttUtility {
         }
     }
 
+    public boolean endPage() {
+        if (currentZoomLevel.getName().equals("day")) {
+            return currentPage == startDate.until(endDate, ChronoUnit.DAYS);
+        } else if (currentZoomLevel.getName().equals("week")){
+            return currentPage == startDate.until(endDate, ChronoUnit.WEEKS);
+        } else {
+            return currentPage == startDate.until(endDate, ChronoUnit.MONTHS);
+        }
+    }
+
     public void calcStartAndEndDate() {
         LocalDateTime start = activities.get(0).getPlannedStartDate();
         LocalDateTime end = start;

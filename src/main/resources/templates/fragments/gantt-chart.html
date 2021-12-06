@@ -15,15 +15,20 @@
          +(${gu.currentZoomLevel.getH1Span() == 0}? ${gu.hoursInMonth(hour)} : ${gu.currentZoomLevel.getH1Span()})
          + '; grid-row: 1;'">
                 <!-- pagination arrows -->
-                <a class="page-link fs-3 py-0 rounded" th:href="@{/gantt/(zoom=${param.zoom}, page=${gu.currentPage-1})}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
+                <li th:class="(${gu.currentPage == 0}? 'disabled ': '') + 'pagination page-item'">
+                    <a class="page-link fs-3 py-0 rounded" aria-label="Previous" tabindex="-1"
+                        th:href="(${gu.currentPage == 0}? '#' : @{/gantt/(zoom=${param.zoom}, page=${ gu.currentPage-1 })})">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
                 <!-- h1:  DayInMonth/WeekNumber/Month -->
                 <div th:text="${hour.format(gu.currentZoomLevel.getH1())}"></div>
-
-                <a class="page-link fs-3 py-0 rounded"  th:href="@{/gantt/(zoom=${param.zoom}, page=${gu.currentPage+1})}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
+                <li th:class="(${gu.endPage()}? 'disabled ': '') + 'pagination page-item'">
+                    <a class="page-link fs-3 py-0 rounded" aria-label="Next" tabindex="-1"
+                       th:href="(${gu.endPage}? '#' : @{/gantt/(zoom=${param.zoom}, page=${ gu.currentPage+1 })})">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
             </div>
             <!-- Divider with Day or Hour gap -->
             <span th:class="(${iterStat.index == 0}? '' : 'border-start-0')+' border border-top-0'"
