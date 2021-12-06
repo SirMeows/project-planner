@@ -1,12 +1,16 @@
 package dk.kea.projectplanner.services;
 
 import dk.kea.projectplanner.models.ProjectModel;
+import dk.kea.projectplanner.models.SubProjectModel;
+import dk.kea.projectplanner.repositories.ActivityRepository;
 import dk.kea.projectplanner.repositories.ProjectRepository;
+import dk.kea.projectplanner.util.ListToMapUtility;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
-public class ProjectService {
+public class ProjectService extends ActivityService<ProjectModel> {
 
     private final ProjectRepository projectRepos;
 
@@ -14,10 +18,34 @@ public class ProjectService {
         this.projectRepos = projectRepos;
     }
 
-    @Transactional // Only executes this method if all parts succeed
-    void createProject(ProjectModel projectModel) {
-        projectRepos.createDateTime(projectModel);
-        projectRepos.createActivity(projectModel);
+    @Override
+    ActivityRepository<ProjectModel> getRepository() {
+        return projectRepos;
+    }
+
+    ProjectModel createProject(ProjectModel projectModel) {
+        createActivity(projectModel);
         projectRepos.createProject(projectModel);
+        return projectModel;
+    }
+
+    ProjectModel findProjectById(long id) {
+        return projectRepos.findById(id);
+    }
+
+    Map<Long,ProjectModel> findAllProjects() {
+        return ListToMapUtility.listToMap(projectRepos.findAllProjects());
+    }
+
+    ProjectModel addSubProjectToProject(ProjectModel projectModel, SubProjectModel subProjectModel) {
+        projectRepos.addSubProjectToProject(projectModel, subProjectModel);
+        projectModel.addSubProject(subProjectModel);
+        return projectModel;
+    }
+
+    ProjectModel populateSubprojects(long id) {
+        var projectModel = findProjectById(id);
+        projectModel.populateSubprojects(ListToMapUtility.listToMap(projectRepos.findSubProjectsByProjectId(id)));
+        return projectModel;
     }
 }

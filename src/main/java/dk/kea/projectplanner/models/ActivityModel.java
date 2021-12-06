@@ -1,8 +1,9 @@
 package dk.kea.projectplanner.models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-public abstract class Activity {
+public abstract class ActivityModel {
     private long id;
     private long activityId;
     private String name;
@@ -12,13 +13,13 @@ public abstract class Activity {
     private LocalDateTime deadline;
     private LocalDateTime actualEndDate;
 
-    public Activity(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
+    public ActivityModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
         this.name = name;
         this.plannedStartDate = plannedStartDate;
         this.deadline = deadline;
     }
 
-    public Activity() {
+    public ActivityModel() {
     }
 
     public long getId() {
@@ -85,5 +86,18 @@ public abstract class Activity {
         this.actualEndDate = actualEndDate;
     }
 
-    //TODO: If there is time, add Discipline to ActivityImpl and Person in order to find qualified personnel for activities
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActivityModel activityModel = (ActivityModel) o;
+        return id == activityModel.id && activityId == activityModel.activityId && dateTimeId == activityModel.dateTimeId && Objects.equals(name, activityModel.name) && Objects.equals(plannedStartDate, activityModel.plannedStartDate) && Objects.equals(actualStartDate, activityModel.actualStartDate) && Objects.equals(deadline, activityModel.deadline) && Objects.equals(actualEndDate, activityModel.actualEndDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, activityId, name, dateTimeId, plannedStartDate, actualStartDate, deadline, actualEndDate);
+    }
 }
+
+//TODO: If there is time, add Discipline to ActivityImpl and Person in order to find qualified personnel for activities

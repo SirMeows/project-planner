@@ -1,6 +1,6 @@
 package dk.kea.projectplanner.util;
 
-import dk.kea.projectplanner.models.Activity;
+import dk.kea.projectplanner.models.ActivityModel;
 import dk.kea.projectplanner.models.ProjectModel;
 
 import java.time.LocalDate;
@@ -17,10 +17,10 @@ public class GanttUtility {
     public int currentPage;
     public LocalDateTime startDate, endDate;
     public String[] activityColors = new String[]{"#b03532", "#33a8a5","#30997a","#6a478f","#da6f2b","#3d8bb1","#e03f3f","#59a627","#4464a1"};
-    public List<Activity> activities = new ArrayList<>();
     public List<LocalDateTime> hours = new ArrayList<>();
     public List<LocalDateTime> hoursPage = new ArrayList<>();
-
+    public List<ActivityModel> activities = new ArrayList<>();
+    public List<LocalDateTime> days = new ArrayList<>();
 
     public GanttUtility() {
         zoomLevels.add(new ZoomLevel("day", 54.0, "EEEE dd-MM-uuuu","HH",24,1));
@@ -41,9 +41,9 @@ public class GanttUtility {
     public void calcStartAndEndDate() {
         LocalDateTime start = activities.get(0).getPlannedStartDate();
         LocalDateTime end = start;
-        for (Activity activity : activities) {
-            if (activity.getPlannedStartDate().isBefore(start)) start = activity.getPlannedStartDate();
-            if (activity.getDeadline().isAfter(end)) end = activity.getDeadline();
+        for (ActivityModel activityModel : activities) {
+            if (activityModel.getPlannedStartDate().isBefore(start)) start = activityModel.getPlannedStartDate();
+            if (activityModel.getDeadline().isAfter(end)) end = activityModel.getDeadline();
         }
         switch(this.currentZoomLevel.getName()) {
             case "day":
@@ -83,7 +83,7 @@ public class GanttUtility {
         return hours.subList(startIndex, endIndex);
     }
 
-    public int startPage(Activity activity){
+    public int startPage(ActivityModel activity){
         long res = -1;
         int hpp = hoursPage.size();
         //if (hpp == 0) hpp++;
@@ -96,7 +96,7 @@ public class GanttUtility {
         return (int) res;
     }
 
-    public int endPage(Activity activity){
+    public int endPage(ActivityModel activity){
         int pageOffset = startPage(activity);
         int hoursOffset = calcOffsetHours(activity, pageOffset) -1;
         // int hoursToStart = pageOffset*hours.size() + hoursOffset;
@@ -137,7 +137,7 @@ public class GanttUtility {
         return plusHours;
     }
 
-    public int calcSpanHours(Activity activity) {
+    public int calcSpanHours(ActivityModel activity) {
         int pageOffset = startPage(activity);
         int hoursOffset = calcOffsetHours(activity, pageOffset)-1;
         int plusHours = 0;
@@ -161,7 +161,7 @@ public class GanttUtility {
         return (int) (hours);
     }
 
-    public int calcOffsetHours(Activity activity, int page) {
+    public int calcOffsetHours(ActivityModel activity, int page) {
         int plusHours;
         if (currentZoomLevel.getName().equals("month")) {
             plusHours = calcPlusHours(page);
