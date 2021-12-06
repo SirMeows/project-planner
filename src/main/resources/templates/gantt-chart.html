@@ -23,7 +23,6 @@
     <div class="row alert alert-success m-0">
         <div class="col navbar-brand h6 mb-0">[Project Name] - Gantt Chart</div>
         <div class="col text-center d-flex">
-            <div class="navbar-brand h6 mb-0">Zoom level: </div>
             <ul class="nav nav-pills">
                 <li class="nav-item" th:each="zoomLevel, iterStat : ${gu.zoomLevels}">
                     <a th:text="${zoomLevel.getName()}" th:href="@{/gantt/(zoom=${iterStat.index})}"
