@@ -4,36 +4,11 @@
     <title id="title">Gantt Chart</title>
     <style id="style">
         .gantt {
-            display: grid;
-            grid-gap: 0px 0px;
-            overflow-x: scroll;
+            /* overflow-x: scroll; */
         }
-
         /* dividers */
         .gantt span {
-            border-left: 1px solid lightgrey;
-            grid-row: 2 / span 20;
-        }
-
-        /* days/hours */
-        h5 {
-            text-align: center;
-            grid-row: 2;
-            margin-top: 10px;
-        }
-
-        /* tasks */
-        .gantt button {
-            color: white;
-            font-size: 12px;
-            padding: 8px 20px;
-            border-radius: 15px;
-        }
-
-        @media only screen and (min-width: 600px) {
-            .gantt div {
-                font-size: 16px;
-            }
+            grid-row: 2 / span 50;
         }
 
         .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
@@ -50,73 +25,16 @@
         <div class="col text-center d-flex">
             <div class="navbar-brand h6 mb-0">Zoom level: </div>
             <ul class="nav nav-pills">
-                <li class="nav-item" th:each="zoomLevel : ${gu.zoomLevelColSizeMap.keySet()}">
-                    <a th:text="${zoomLevel}" th:href="@{/gantt/{zoomLevel}(zoomLevel=${zoomLevel.toString().toLowerCase()})}" class="nav-link pt-1 pb-1" th:classappend="${gu.zoomLevel == zoomLevel} ? 'active'">day/week/month</a>
+                <li class="nav-item" th:each="zoomLevel, iterStat : ${gu.zoomLevels}">
+                    <a th:text="${zoomLevel.getName()}" th:href="@{/gantt/(zoom=${iterStat.index})}"
+                       class="nav-link pt-1 pb-1" th:classappend="${gu.currentZoomLevel == gu.zoomLevels.get(iterStat.index)} ? 'active'">day/week/month</a>
                 </li>
             </ul>
         </div>
-        <div class="col text-end h6 mb-0 navbar-brand" th:text="'Project duration: '+${gu.hoursTotal.size()}+' hours'"></div>
+        <div class="col text-end h6 mb-0 navbar-brand" th:text="'Grid span: '+${gu.hoursPage.size()}+' hours'"></div>
     </div>
-    <!-- div th:replace="fragments/gantt-chart :: gantt-chart"></div -->
-    <!-- Added css to control number of columns and their size -->
-    <div class="gantt" th:style="'grid-template-columns: repeat('+${gu.hoursTotal.size()}+', minmax('+${gu.zoomLevelColSizeMap.get(gu.zoomLevel)}+'px, 1fr));'">
-        <!-- iterate over hours from start to end of project -->
-        <th:block th:each="dateTime, iterStat : ${gu.hoursTotal}" th:switch="${gu.zoomLevel}">
-            <th:block th:case="${zoomLevels.get(0)}">
-                <!-- day heading -->
-                <div th:if="${iterStat.index % 24 == 0}" class="border text-center fs-5 bg-light"
-                     th:text="${dateTime.plusHours(1).getDayOfWeek().getDisplayName(gu.txtStyle, gu.locale).toLowerCase()}"
-                     th:style="'grid-column:'+${iterStat.count}+' / span 24; grid-row: 1; margin: 0 -1px 0 0;'"
-                ></div>
-                <!-- /* zoomLevel == day, Hour dividers /* -->
-                <span th:style="'grid-column: '+ ${iterStat.count}+';'"></span>
-                <h5 th:text="${#numbers.formatInteger(dateTime.getHour(),2)}"
-                    th:style="'grid-column:'+${(iterStat.count)}+' / span 1;'"></h5>
-            </th:block>
-            <th:block th:case="${zoomLevels.get(1)}">
-                <th:block th:if="${iterStat.index % 24 == 0}">
-                    <!-- Week number heading -->
-                    <div th:if="${(iterStat.index + gu.calcWeekOffsetHours() ) % 168 == 0 || iterStat.index == 0}" class="border text-center fs-5 bg-light p-1"
-                         th:text="'week '+${dateTime.get(gu.weekFields.weekOfWeekBasedYear())}"
-                         th:style="'grid-column:'+${iterStat.count}+' / span '+(${iterStat.index == 0}? ${168 - gu.calcWeekOffsetHours()} : '168')
-                         +'; grid-row: 1; margin: 0 -1px 0 0;'"
-                    ></div>
-                    <!-- Day divider -->
-                    <span th:style="'grid-column: '+ ${iterStat.count}+';'"></span>
-                    <!-- display weekday names -->
-                    <h5 th:text="${dateTime.plusHours(1).getDayOfWeek().getDisplayName(gu.txtStyle, gu.locale)}"
-                        th:style="'grid-column:'+${(iterStat.count)}+' / span 24;'"
-                    ></h5>
-                </th:block>
-            </th:block>
-            <th:block th:case="${zoomLevels.get(2)}">
-                <th:block th:if="${iterStat.index % 24 == 0}">
-                    <!-- Month heading -->
-                    <div th:if="${(iterStat.index + gu.calcMonthOffsetHours()) % gu.hoursInMonth(dateTime) == 0 || iterStat.index == 0}" class="border text-center fs-5 bg-light p-1"
-                         th:text="${dateTime.getMonth().getDisplayName(gu.txtStyle, gu.locale)}"
-                         th:style="'grid-column:'+${iterStat.count}+' / span '
-                         +(${iterStat.index == 0}? ${gu.hoursInMonth(dateTime) - gu.calcMonthOffsetHours()} : ${gu.hoursInMonth(dateTime)})
-                         +'; grid-row: 1; margin: 0 -1px 0 0;'"
-                    ></div>
-                    <!-- Day divider -->
-                    <span th:style="'grid-column: '+ ${iterStat.count}+';'"></span>
-                    <!-- display date -->
-                    <h5 th:text="${dateTime.plusHours(1).getDayOfMonth()}"
-                        th:style="${dateTime.equals(gu.startDate)}?
-            'grid-column: 1 / span 24;' : 'grid-column:'+${(iterStat.index)}+' / span 24;'"
-                    ></h5>
-                </th:block>
-            </th:block>
-        </th:block>
-        <!-- show activities for selected project/subproject/task -->
-        <button class="btn fs-6 mb-2" th:each="activity, iterStat : ${gu.activities}" th:text="${activity.getName()}"
-                data-toggle="popover" th:attr="data-bs-content='Display additional info on activity here'"
-                data-bs-placement="bottom" th:style=
-                        "'background:'+${gu.activityColors[iterStat.index % 9]}+';grid-row:'+${iterStat.count + 2}+
-                ';grid-column:'+${gu.calcOffsetHours(activity)}+' / span '+
-                ${gu.calcSpanHours(activity)}+';'"
-        ></button>
-    </div>
+    <div th:replace="fragments/gantt-chart :: gantt-chart(gu=${gu})"></div>
+
 </div>
 <footer th:replace="fragments/footer :: commonFooter"></footer>
 <script>

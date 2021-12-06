@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="gantt-chart" class="gantt">
-    <span class="d-1"></span>
-    <span class="d-2"></span>
-    <span class="d-3"></span>
-    <span class="d-4"></span>
-    <span class="d-5"></span>
-    <span class="d-6"></span>
+<!-- Added css to control number of columns and their size minmax('+${gu.currentZoomLevel.getColSize()}+'px -->
+<div th:fragment="gantt-chart" class="gantt d-grid gap-0"
+     th:style="'grid-template-columns: repeat('+${gu.hoursPage.size()}+', 1fr));'">
 
-    <h3 class="h-sun">sun</h3>
-    <h3 class="h-mon">mon</h3>
-    <h3 class="h-tue">tue</h3>
-    <h3 class="h-wed">wed</h3>
-    <h3 class="h-thu">thu</h3>
-    <h3 class="h-fri">fri</h3>
-    <h3 class="h-sat">sat</h3>
+    <!-- iterate over hours in current page -->
+    <th:block th:each="hour, iterStat : ${gu.hoursPage}">
+        <th:block th:if="${gu.currentZoomLevel.getName().equals('day')}? ${true} : ${ hour.getHour() == 0}">
+            <div th:if="${gu.currentZoomLevel.evalCondition(hour)}"
+                 th:class="(${iterStat.index == 0}? '' : 'border-start-0') +
+                 ' border text-center fs-5 bg-light p-1 d-flex justify-content-between'"
+                 th:style="'grid-column:'+${iterStat.count}+' / span '
+         +(${gu.currentZoomLevel.getH1Span() == 0}? ${gu.hoursInMonth(hour)} : ${gu.currentZoomLevel.getH1Span()})
+         + '; grid-row: 1;'">
+                <!-- pagination arrows -->
+                <a class="page-link fs-3 py-0 rounded" th:href="@{/gantt/(zoom=${param.zoom}, page=${gu.currentPage-1})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                <!-- h1:  DayInMonth/WeekNumber/Month -->
+                <div th:text="${hour.format(gu.currentZoomLevel.getH1())}"></div>
 
-    <div class="t-1" style="grid-column: sun-morning / mon-night;">Take the badger for a walk</div>
-    <div class="t-2" style="grid-column: mon-morning / sat-night;">Manufacture some cheese</div>
-    <div class="t-3" style="grid-column: sun-morning / tue-midday;">Prepare talk on foot hygiene</div>
-    <div class="t-4" style="grid-column: tue-midday / wed-night;">Sleep</div>
-    <div class="t-5" style="grid-column: mon-morning / wed-midday;">Photograph breakfast</div>
-    <div class="t-6" style="grid-column: mon-night / fri-morning;">Paint the inside of the refrigerator</div>
-    <div class="t-7" style="grid-column: wed-midday /sat-night;">Sail to Madagascar</div>
-    <div class="t-8" style="grid-column: wed-midday / thu-midday;">Sleep</div>
-    <div class="t-9" style="grid-column: thu-midday / sat-night;">Plan the following week’s tasks</div>
+                <a class="page-link fs-3 py-0 rounded"  th:href="@{/gantt/(zoom=${param.zoom}, page=${gu.currentPage+1})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </div>
+            <!-- Divider with Day or Hour gap -->
+            <span th:class="(${iterStat.index == 0}? '' : 'border-start-0')+' border border-top-0'"
+                  th:style="'grid-column: '+ ${iterStat.count}+' / span '+${gu.currentZoomLevel.getH2Span()} +';'"></span>
+            <!-- h2: Day name/hour of day -->
+            <div th:text="${hour.format(gu.currentZoomLevel.getH2())}" class="border-bottom text-center fs-5 mb-3"
+                 th:style="'grid-column:'+${(iterStat.count)}+' / span '+${gu.currentZoomLevel.getH2Span()}+'; grid-row:2;'"
+            ></div>
+        </th:block>
+    </th:block>
+    <!-- show activities for selected project/subproject/task -->
+    <th:block th:each="activity, iterStat : ${gu.activities}">
+        <!-- check if activity is on page -->
+    <button th:if="${gu.hoursPage.size() > 0 && gu.currentPage >= gu.startPage(activity) && gu.currentPage <= gu.endPage(activity) && gu.calcSpanHours(activity) > 0}"
+            class="btn fs-6 mb-2 rounded-pill text-white" th:text="${activity.getName()}"
+            data-toggle="popover" th:attr="data-bs-content='Display menu for activity here'" data-bs-placement="bottom"
+            th:style="'background:'+${gu.activityColors[iterStat.index % 9]}+';grid-row:'+${iterStat.count + 2}+
+                      ';grid-column:'+${gu.calcOffsetHours(activity, gu.currentPage)}+' / span '+
+                      ${gu.calcSpanHours(activity)}+';'">
+    </button>
+    </th:block>
 </div>
 </body>
 </html>
