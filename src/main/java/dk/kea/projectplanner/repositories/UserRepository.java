@@ -12,38 +12,40 @@ public interface UserRepository {
         @Result(property="id", column="id"),
         @Result(property="username", column="username"),
         @Result(property="password", column="password")})
-    List<UserModel> findAll();
+    List<UserModel> findAllUsers();
 
     @Select("SELECT * FROM user WHERE id = #{id}")
     @Results(value = {
         @Result(property="id", column="id"),
         @Result(property="username", column="username"),
         @Result(property="password", column="password")})
-    UserModel findUserById(long id);
+    UserModel findById(long id);
 
     @Select("SELECT * FROM user WHERE username = #{username}")
     @Results(value = {
             @Result(property="id", column="id"),
             @Result(property="username", column="username"),
             @Result(property="password", column="password")})
-    UserModel findUserByUsername(String username);
+    UserModel findByUsername(String username);
 
     @Delete("DELETE FROM user WHERE id = #{id}")
     int deleteById(long id);
+
+    // TODO:Make username unique and create a deleteByUsername(String username)
 
     @Update("UPDATE user SET password=#{password} WHERE id=#{id}")
     int updatePassword(UserModel userModel);
 
     @Insert("INSERT INTO user (id, username, password) VALUES (#{id}, #{username}, #{password})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
-    void insertUser(UserModel userModel);
+    void createUser(UserModel userModel);
 
     @Select("SELECT * FROM user WHERE username LIKE #{searchTerm}")
     @Results(value = {
             @Result(property="id", column="id"),
             @Result(property="username", column="username"),
             @Result(property="password", column="password")})
-    List<UserModel> searchUserByUsername(String searchTerm);
+    List<UserModel> findBySearchTerm(String searchTerm);
 }
 
 //@org.apache.ibatis.annotations.

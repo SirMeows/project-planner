@@ -12,6 +12,14 @@ public class UserModel {
     @ValidPassword
     private String password;
 
+    public UserModel(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public UserModel() {
+    }
+
     public long getId() {
         return id;
     }

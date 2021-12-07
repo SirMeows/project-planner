@@ -34,7 +34,7 @@ public class TaskService extends ActivityService<TaskModel>{
     }
 
     Map<Long,TaskModel> findAllTasks() {
-        return ListToMapUtility.listToMap(taskRepos.findAllTasks());
+        return ListToMapUtility.listToMapActivity(taskRepos.findAllTasks());
     }
 
     TaskModel addSubTaskToTask(TaskModel taskModel, SubTaskModel subTaskModel) {
@@ -45,7 +45,7 @@ public class TaskService extends ActivityService<TaskModel>{
 
     TaskModel populateSubTasks(long id) {
         var taskModel = findTaskById(id);
-        taskModel.populateSubTasks(ListToMapUtility.listToMap(taskRepos.findSubTasksByTaskId(id)));
+        taskModel.populateSubTasks(ListToMapUtility.listToMapActivity(taskRepos.findSubTasksByTaskId(id)));
         return taskModel;
     }
 }
