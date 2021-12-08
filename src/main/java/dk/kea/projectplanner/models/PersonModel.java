@@ -2,7 +2,6 @@ package dk.kea.projectplanner.models;
 
 public class PersonModel {
     private long id;
-    private long userId;
     private String firstName;
     private String lastName;
 
@@ -20,14 +19,6 @@ public class PersonModel {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 
     public String getFirstName() {

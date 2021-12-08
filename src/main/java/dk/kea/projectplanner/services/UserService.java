@@ -1,12 +1,11 @@
 package dk.kea.projectplanner.services;
 
+import dk.kea.projectplanner.models.PersonModel;
 import dk.kea.projectplanner.models.UserModel;
 import dk.kea.projectplanner.repositories.UserRepository;
 import dk.kea.projectplanner.util.ListToMapUtility;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,8 +17,8 @@ public class UserService {
         this.userRepos = userRepos;
     }
 
-    UserModel createUser(UserModel userModel) {
-        userRepos.createUser(userModel);
+    UserModel createUser(UserModel userModel, PersonModel personModel) {
+        userRepos.createUser(userModel, personModel); // should this ask for personId or model?
         return userModel;
     }
 
@@ -47,5 +46,4 @@ public class UserService {
     Map<Long, UserModel> findBySearchTerm(String searchTerm) {
         return ListToMapUtility.listToMapUser(userRepos.findBySearchTerm(searchTerm));
     }
-
 }

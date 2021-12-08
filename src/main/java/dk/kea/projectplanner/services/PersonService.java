@@ -39,8 +39,6 @@ public class PersonService {
         personRepos.deleteById(id);
     }
 
-    // TODO: addUserToPerson()
-
     Map<Long, PersonModel> findAllPersons() {
         return ListToMapUtility.listToMapPerson(personRepos.findAllPersons());
     }

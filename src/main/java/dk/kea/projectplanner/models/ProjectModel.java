@@ -24,7 +24,7 @@ public class ProjectModel extends ActivityModel {
         subProjects.put(subProjectModel.getId(),subProjectModel);
     }
 
-    public void populateSubprojects(Map<Long,SubProjectModel> subProjects) {
+    public void populateSubprojects(Map<Long, SubProjectModel> subProjects) {
         subProjects = subProjects;
     }
 

@@ -1,9 +1,7 @@
 package dk.kea.projectplanner.repositories;
 
 import dk.kea.projectplanner.models.PersonModel;
-import dk.kea.projectplanner.models.UserModel;
 import org.apache.ibatis.annotations.*;
-
 import java.util.List;
 
 @Mapper
@@ -30,9 +28,6 @@ public interface PersonRepository {
 
     @Delete("DELETE FROM person WHERE id = #{id}")
     int deleteById(long id);
-
-    @Insert("")
-    void addUserToPerson(PersonModel personModel, UserModel userModel);
 
     @Select("SELECT * FROM person")
     @Results(value = {
