@@ -3,10 +3,6 @@
 <head th:include="fragments/header :: commonHead">
     <title id="title">Gantt Chart</title>
     <style id="style">
-        .gantt {
-            /* overflow-x: scroll; */
-        }
-        /* dividers */
         .gantt span {
             grid-row: 2 / span 50;
         }
@@ -30,7 +26,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col text-end h6 mb-0 navbar-brand" th:text="'Grid span: '+${gu.hoursPage.size()}+' hours'"></div>
+        <div class="col text-end h6 mb-0 navbar-brand" th:text="'Grid span: '+${gu.columnsInPage.size()}+' hours'"></div>
     </div>
     <div th:replace="fragments/gantt-chart :: gantt-chart(gu=${gu})"></div>
 

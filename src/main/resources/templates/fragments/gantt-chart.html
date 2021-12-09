@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- Added css to control number of columns and their size minmax('+${gu.currentZoomLevel.getColSize()}+'px -->
+<!-- TODO: Weekdays in week mode does variates in size, despite using 1fr, needs a fix -->
 <div th:fragment="gantt-chart" class="gantt d-grid gap-0"
-     th:style="'grid-template-columns: repeat('+${gu.hoursPage.size()}+', 1fr));'">
+     th:style="'grid-template-columns: repeat('+${gu.columnsInPage.size()}+', 1fr));'">
 
     <!-- iterate over hours in current page -->
-    <th:block th:each="hour, iterStat : ${gu.hoursPage}">
+    <th:block th:each="hour, iterStat : ${gu.columnsInPage}">
         <th:block th:if="${gu.currentZoomLevel.getName().equals('day')}? ${true} : ${ hour.getHour() == 0}">
             <div th:if="${gu.currentZoomLevel.evalCondition(hour)}"
                  th:class="(${iterStat.index == 0}? '' : 'border-start-0') +
@@ -15,20 +15,20 @@
          +(${gu.currentZoomLevel.getH1Span() == 0}? ${gu.hoursInMonth(hour)} : ${gu.currentZoomLevel.getH1Span()})
          + '; grid-row: 1;'">
                 <!-- pagination arrows -->
-                <li th:class="(${gu.currentPage == 0}? 'disabled ': '') + 'pagination page-item'">
-                    <a class="page-link fs-3 py-0 rounded" aria-label="Previous" tabindex="-1"
-                        th:href="(${gu.currentPage == 0}? '#' : @{/gantt/(zoom=${param.zoom}, page=${ gu.currentPage-1 })})">
+                <div style="width: 44px;" th:class="(${gu.pagination.currentPage > 0}? 'page-item ': '')">
+                    <a th:if="${gu.pagination.currentPage > 0}" class="page-link fs-3 py-0 rounded" aria-label="Previous"
+                        th:href="@{/gantt/(zoom=${param.zoom}, page=${ gu.pagination.currentPage-1 })}">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
-                </li>
+                </div>
                 <!-- h1:  DayInMonth/WeekNumber/Month -->
                 <div th:text="${hour.format(gu.currentZoomLevel.getH1())}"></div>
-                <li th:class="(${gu.endPage()}? 'disabled ': '') + 'pagination page-item'">
-                    <a class="page-link fs-3 py-0 rounded" aria-label="Next" tabindex="-1"
-                       th:href="(${gu.endPage}? '#' : @{/gantt/(zoom=${param.zoom}, page=${ gu.currentPage+1 })})">
+                <div style="width: 44px;" th:class="(${gu.endPage()}? '': 'page-item ')">
+                    <a th:unless="${gu.endPage()}" class="page-link fs-3 py-0 rounded" aria-label="Next"
+                       th:href="@{/gantt/(zoom=${param.zoom}, page=${ gu.pagination.currentPage+1 })}">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
-                </li>
+                </div>
             </div>
             <!-- Divider with Day or Hour gap -->
             <span th:class="(${iterStat.index == 0}? '' : 'border-start-0')+' border border-top-0'"
@@ -40,14 +40,14 @@
         </th:block>
     </th:block>
     <!-- show activities for selected project/subproject/task -->
-    <th:block th:each="activity, iterStat : ${gu.activities}">
+    <th:block th:each="activity, iterStat : ${activities}">
         <!-- check if activity is on page -->
-    <button th:if="${gu.hoursPage.size() > 0 && gu.currentPage >= gu.startPage(activity) && gu.currentPage <= gu.endPage(activity) && gu.calcSpanHours(activity) > 0}"
+    <button th:if="${gu.activityOnPage(activity)}"
             class="btn fs-6 mb-2 rounded-pill text-white" th:text="${activity.getName()}"
             data-toggle="popover" th:attr="data-bs-content='Display menu for activity here'" data-bs-placement="bottom"
-            th:style="'background:'+${gu.activityColors[iterStat.index % 9]}+';grid-row:'+${iterStat.count + 2}+
-                      ';grid-column:'+${gu.calcOffsetHours(activity, gu.currentPage)}+' / span '+
-                      ${gu.calcSpanHours(activity)}+';'">
+            th:style="'background:'+${gu.colors[iterStat.index % 9]}+';grid-row:'+${iterStat.count + 2}+
+                      ';grid-column:'+${gu.calcColumnOffset(activity)+1}+' / span '+
+                      ${gu.calcColumnSpan(activity)}+';'">
     </button>
     </th:block>
 </div>

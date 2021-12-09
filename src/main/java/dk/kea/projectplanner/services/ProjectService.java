@@ -33,7 +33,7 @@ public class ProjectService extends ActivityService<ProjectModel> {
         return projectRepos.findById(id);
     }
 
-    Map<Long,ProjectModel> findAllProjects() {
+    public Map<Long,ProjectModel> findAllProjects() {
         return ListToMapUtility.listToMap(projectRepos.findAllProjects());
     }
 
