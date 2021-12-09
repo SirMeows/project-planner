@@ -34,7 +34,10 @@ public class ProjectService extends ActivityService<ProjectModel> {
     }
 
     public Map<Long,ProjectModel> findAllProjects() {
-        return ListToMapUtility.listToMap(projectRepos.findAllProjects());
+        return ListToMapUtility.listToMapActivity(projectRepos.findAllProjects());
+    }
+        void deleteById(long id) {
+        projectRepos.deleteById(id);
     }
 
     ProjectModel addSubProjectToProject(ProjectModel projectModel, SubProjectModel subProjectModel) {
@@ -45,7 +48,7 @@ public class ProjectService extends ActivityService<ProjectModel> {
 
     ProjectModel populateSubprojects(long id) {
         var projectModel = findProjectById(id);
-        projectModel.populateSubprojects(ListToMapUtility.listToMap(projectRepos.findSubProjectsByProjectId(id)));
+        projectModel.populateSubprojects(ListToMapUtility.listToMapActivity(projectRepos.findSubProjectsByProjectId(id)));
         return projectModel;
     }
 }

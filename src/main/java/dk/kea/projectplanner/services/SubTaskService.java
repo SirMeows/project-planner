@@ -27,6 +27,6 @@ public class SubTaskService extends ActivityService<SubTaskModel> {
     }
 
     Map<Long,SubTaskModel> findAllSubTasks() {
-        return ListToMapUtility.listToMap(subTaskRepos.findAllSubTasks());
+        return ListToMapUtility.listToMapActivity(subTaskRepos.findAllSubTasks());
     }
 }

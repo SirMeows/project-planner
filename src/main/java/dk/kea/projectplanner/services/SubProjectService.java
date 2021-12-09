@@ -39,7 +39,7 @@ public class SubProjectService extends ActivityService<SubProjectModel>{
 
     SubProjectModel populateTasks(long id) {
         var subProjectModel = findSubProjectById(id);
-        subProjectModel.populateTasks(ListToMapUtility.listToMap(subProjectRepos.findTasksBySubProjectId(id)));
+        subProjectModel.populateTasks(ListToMapUtility.listToMapActivity(subProjectRepos.findTasksBySubProjectId(id)));
         return subProjectModel;
     }
 }

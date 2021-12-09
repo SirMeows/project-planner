@@ -66,6 +66,8 @@ public class ProjectServiceIntegrationTest {
         return p;
     }
 
+    // TODO: Test deleteById
+
     @Test
     @Transactional
     @Rollback(value = false)

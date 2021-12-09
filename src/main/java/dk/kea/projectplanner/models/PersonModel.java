@@ -4,19 +4,13 @@ public class PersonModel {
     private long id;
     private String firstName;
     private String lastName;
-    private UserModel userModel;
 
-    public PersonModel(String firstName, String lastName, UserModel userModel) {
+    public PersonModel(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userModel = userModel;
     }
 
-    public PersonModel(long id, String firstName, String lastName, UserModel userModel) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userModel = userModel;
+    public PersonModel() {
     }
 
     public long getId() {
@@ -41,13 +35,5 @@ public class PersonModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public UserModel getUser() {
-        return userModel;
-    }
-
-    public void setUser(UserModel userModel) {
-        this.userModel = userModel;
     }
 }
