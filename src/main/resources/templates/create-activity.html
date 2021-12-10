@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: commonHead">
+    <title id="title">Create Activity</title>
+    <style id="style"></style>
+</head>
+<body>
+<header th:replace="fragments/header :: commonHeader(activePage='create-activity')"></header>
+<div class="container">
+    <div class="row alert alert-success m-0">Create Activity</div>
+    <form method="GET" th:action="@{/activity/create}">
+        <div class="mt-4 mb-4">
+            <label for="type">Choose type:</label>
+            <select onchange="this.form.submit()" name="type" id="type">
+                <option value="ProjectModel" th:selected="${type.equals('ProjectModel')}">Project</option>
+                <option value="SubProjectModel" th:selected="${type.equals('SubProjectModel')}">SubProject</option>
+            </select>
+        </div>
+    </form>
+    <form method="POST" th:action="@{/activity/create}" th:object="${activity}">
+        <div class="mt-4 mb-4">
+            <label for="name" class="form-label">Name:</label>
+            <input th:field="*{name}" class="form-control" id="name" type="text" />
+        </div>
+        <div class="mt-4 mb-4">
+            <label for="start" class="form-label">Start date:</label>
+            <input id="start" th:field="*{plannedStartDate}" type="datetime-local">
+        </div>
+        <div class="mt-4 mb-4">
+            <label for="end" class="form-label">End date:</label>
+            <input id="end" th:field="*{deadline}" type="datetime-local">
+        </div>
+        <div class="mb-2">
+            <input type="submit" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<footer th:replace="fragments/footer :: commonFooter"></footer>
+</body>
+</html>

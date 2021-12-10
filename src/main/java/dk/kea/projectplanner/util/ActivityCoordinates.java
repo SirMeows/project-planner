@@ -16,7 +16,7 @@ public class ActivityCoordinates {
     public int startPage(ActivityModel activity){
         ZoomLevel cz = gu.currentZoomLevel;
         long page = gu.startColumn.until(activity.getPlannedStartDate(), cz.getChronoUnit());
-        // System.out.println("StartPage for "+activity.getName()+ " : " + page);
+        System.out.println("StartPage for "+activity.getName()+ " : " + page);
         return (int) page;
     }
 
@@ -38,8 +38,8 @@ public class ActivityCoordinates {
             page = activity.getPlannedStartDate().minusHours(res).until(activity.getDeadline(),
                     chronoUnit);
         }
-        System.out.println("EndPage for "+activity.getName()+ " : " + page + " "+res+" "
-                +activity.getPlannedStartDate().toString()+" "+activity.getDeadline().toString());
+        //System.out.println("EndPage for "+activity.getName()+ " : " + page + " "+res+" "
+        //        +activity.getPlannedStartDate().toString()+" "+activity.getDeadline().toString());
         return (int) page;
     }
     // for month/week
@@ -54,18 +54,20 @@ public class ActivityCoordinates {
 
     public int calcColumnSpan(ActivityModel activity) {
         int currentPage = gu.pagination.currentPage;
-        int pageOffset = startPage(activity);
-        long hoursOffset = calcColumnOffset(activity, pageOffset);
+        long hoursOffset = calcColumnOffset(activity, startPage(activity));
         long plusHours = 0;
         if (gu.currentZoomLevel.getName().equals("day")){
-            plusHours = (currentPage - pageOffset)* gu.columnsInPage.size()-hoursOffset;
+            plusHours = (currentPage - startPage(activity))* gu.columnsInPage.size()-hoursOffset;
         } else {
+            //if (currentPage > startPage(activity))
             plusHours = calcColumnsSeen(currentPage) - hoursOffset;
+            if (currentPage == startPage(activity)) plusHours = -hoursOffset;
         }
         long hours = activity.getPlannedStartDate().plusHours(plusHours).until( activity.getDeadline(), ChronoUnit.HOURS );
         if (hours > gu.columnsInPage.size()) hours = gu.columnsInPage.size();
-        System.out.println("spanning hours for "+activity.getName()+ " : " + (hours - calcColumnOffset(activity, currentPage)) + " " + plusHours);
-        // if (currentPage == 0) return (int) hours - hoursOffset;
+        System.out.println("column span for "+activity.getName()+ " : "
+                + (hours - calcColumnOffset(activity, currentPage)) + " " + plusHours + " " + hours);
+        if (currentPage == startPage(activity)) return (int) (hours - hoursOffset);
         return (int) (hours - calcColumnOffset(activity, currentPage));
     }
 
@@ -77,8 +79,9 @@ public class ActivityCoordinates {
             plusHours = page * gu.columnsInPage.size();
         }
         long offset = gu.startColumn.plusHours(plusHours).until(activity.getPlannedStartDate(), ChronoUnit.HOURS);
+        //System.out.println(offset);
         if (offset < 0) offset = 0;
-        return offset; // off by one
+        return offset;
     }
 
 }

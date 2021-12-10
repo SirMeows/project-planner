@@ -23,9 +23,10 @@ public class ProjectService extends ActivityService<ProjectModel> {
         return projectRepos;
     }
 
-    ProjectModel createProject(ProjectModel projectModel) {
+    public ProjectModel createProject(ProjectModel projectModel) {
         createActivity(projectModel);
         projectRepos.createProject(projectModel);
+        //System.out.println(projectModel.getPlannedStartDate().toString());
         return projectModel;
     }
 

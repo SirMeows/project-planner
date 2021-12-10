@@ -24,6 +24,7 @@ public class GanttChartController {
     public void ganttUtility(Model model) {
         if(gu == null) gu = new GanttUtility();
         model.addAttribute("gu", gu);
+        System.out.println(ps.findAllProjects().get(4L).getName());
         model.addAttribute("activities",ps.findAllProjects().values());
     }
 

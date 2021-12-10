@@ -70,8 +70,8 @@ public class GanttUtility {
             case "month":
                 start = start.toLocalDate().with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay();
                 end = end.toLocalDate().with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay().plusDays(1); //atTime(23,0);
-                System.out.println("startM: " +start);
-                System.out.println("EndM: "+end);
+                //System.out.println("startM: " +start);
+                //System.out.println("EndM: "+end);
                 break;
             default:
         }

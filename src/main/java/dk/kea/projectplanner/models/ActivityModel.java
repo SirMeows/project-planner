@@ -1,5 +1,7 @@
 package dk.kea.projectplanner.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -8,8 +10,10 @@ public abstract class ActivityModel {
     private long activityId;
     private String name;
     private long dateTimeId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime plannedStartDate;
     private LocalDateTime actualStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
     private LocalDateTime actualEndDate;
 
