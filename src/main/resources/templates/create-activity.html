@@ -10,14 +10,24 @@
     <div class="row alert alert-success m-0">Create Activity</div>
     <form method="GET" th:action="@{/activity/create}">
         <div class="mt-4 mb-4">
-            <label for="type">Choose type:</label>
-            <select onchange="this.form.submit()" name="type" id="type">
-                <option value="ProjectModel" th:selected="${type.equals('ProjectModel')}">Project</option>
-                <option value="SubProjectModel" th:selected="${type.equals('SubProjectModel')}">SubProject</option>
+            <label for="level">Choose type:</label>
+            <select onchange="this.form.submit()" name="level" id="level">
+                <option value="0" th:selected="${level.equals('0')}">Project</option>
+                <option value="1" th:selected="${level.equals('1')}">SubProject</option>
+                <option value="2" th:selected="${level.equals('2')}">Task</option>
+                <option value="3" th:selected="${level.equals('3')}">SubTask</option>
             </select>
         </div>
     </form>
-    <form method="POST" th:action="@{/activity/create}" th:object="${activity}">
+    <form method="POST" th:action="@{'/activity/create'}" th:object="${activity}">
+        <!--  -->
+        <div th:unless="${parentName==null}" class="mt-4 mb-4">
+            <label for="activity" th:text="'Choose '+${parentName}"></label>
+            <select th:field="*{parentId}" id="activity">
+                <!--option th:if="${activities.isEmpty()}" th:text="${' '}"></option-->
+                <option th:each="activity : ${activities}" th:value="${activity.getId()}" th:text="${activity.getName()}"></option>
+            </select>
+        </div>
         <div class="mt-4 mb-4">
             <label for="name" class="form-label">Name:</label>
             <input th:field="*{name}" class="form-control" id="name" type="text" />
@@ -31,8 +41,10 @@
             <input id="end" th:field="*{deadline}" type="datetime-local">
         </div>
         <div class="mb-2">
+            <input type="hidden" th:field="*{levelId}" th:value="${level}">
             <input type="submit" class="btn btn-primary" />
         </div>
+
     </form>
 </div>
 <footer th:replace="fragments/footer :: commonFooter"></footer>

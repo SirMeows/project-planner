@@ -2,25 +2,16 @@ package dk.kea.projectplanner.services;
 
 
 import dk.kea.projectplanner.ProjectPlannerApplication;
-import dk.kea.projectplanner.models.ProjectModel;
-import dk.kea.projectplanner.models.SubProjectModel;
-import dk.kea.projectplanner.repositories.SubProjectRepository;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-
-import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -32,7 +23,7 @@ import static org.junit.Assert.*;
 public class ProjectServiceIntegrationTest {
 
     private static final LocalDateTime BASE_DATE = LocalDateTime.of(2000,10,21,1,0,0);
-
+/*
     @Autowired
     private ProjectService projectService;
     @Autowired
@@ -67,7 +58,7 @@ public class ProjectServiceIntegrationTest {
     }
 
     // TODO: Test deleteById
-
+    /*
     @Test
     @Transactional
     @Rollback(value = false)
@@ -88,5 +79,5 @@ public class ProjectServiceIntegrationTest {
         s.setPlannedStartDate(BASE_DATE);
         s.setName("testsubprjname");
         return s;
-    }
+    } */
 }

@@ -1,14 +1,12 @@
 package dk.kea.projectplanner.util;
 
 import dk.kea.projectplanner.models.ActivityModel;
-import dk.kea.projectplanner.models.ProjectModel;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GanttUtility {
 
@@ -51,10 +49,10 @@ public class GanttUtility {
         return pagination.endPage(currentZoomLevel, startColumn, endColumn);
     }
 
-    public void calcStartAndEndColumn(Map<Long,ProjectModel> activities) {
-        LocalDateTime start = activities.values().stream().findFirst().get().getPlannedStartDate();
+    public void calcStartAndEndColumn(List<ActivityModel> activities) {
+        LocalDateTime start = activities.get(0).getPlannedStartDate();
         LocalDateTime end = start;
-        for (ActivityModel activityModel : activities.values()) {
+        for (ActivityModel activityModel : activities) {
             if (activityModel.getPlannedStartDate().isBefore(start)) start = activityModel.getPlannedStartDate();
             if (activityModel.getDeadline().isAfter(end)) end = activityModel.getDeadline();
         }

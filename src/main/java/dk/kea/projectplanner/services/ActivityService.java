@@ -2,22 +2,55 @@ package dk.kea.projectplanner.services;
 
 import dk.kea.projectplanner.models.ActivityModel;
 import dk.kea.projectplanner.repositories.ActivityRepository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Transactional
-public abstract class ActivityService <P extends ActivityModel> {
+@Service
+public class ActivityService {
 
-    abstract ActivityRepository<P> getRepository();
+    ActivityRepository repos;
 
-    void updateDateTime(P activity) {
-        getRepository().updateActualEndDate(activity);
-        getRepository().updateDeadline(activity);
-        getRepository().updateActualStartDate(activity);
-        getRepository().updatePlannedStartDate(activity);
+    public ActivityService(ActivityRepository repos) {
+        this.repos = repos;
     }
 
-    protected void createActivity(P activity) {
-        getRepository().createDateTime(activity);
-        getRepository().createActivity(activity);
+    public List<ActivityModel> findAll() {
+        return repos.findAll();
+    }
+
+
+    public List<ActivityModel> findAllByLevel(String name) {
+        return repos.findAll().stream().filter(
+                p -> p.getLevel().equals(name)).collect(Collectors.toList());
+    }
+
+    public String levelNameByLevelId(int id) {
+        return repos.findLevelById(id);
+    }
+
+    public List<ActivityModel> findAllByLevelId(int id) {
+        return repos.findAll().stream().filter(p -> p.getLevelId() == id).collect(Collectors.toList());
+    }
+
+    void updateDateTime(ActivityModel activity) {
+        repos.updateActualEndDate(activity);
+        repos.updateDeadline(activity);
+        repos.updateActualStartDate(activity);
+        repos.updatePlannedStartDate(activity);
+    }
+
+    public void createActivity(ActivityModel activity) {
+        repos.createDateTime(activity);
+        repos.createActivity(activity);
+        addSubActivity(activity.getParentId(), activity);
+    }
+
+    public void addSubActivity(long activityId, ActivityModel subActivity) {
+        repos.addSubActivity(activityId, subActivity);
+    }
+
+    public int levelIdByName(String level) {
+    return repos.findLevelIdByName(level);
     }
 }

@@ -1,32 +1,60 @@
 package dk.kea.projectplanner.repositories;
 
 import dk.kea.projectplanner.models.ActivityModel;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Mapper
 @Transactional// Only executes a method if all parts succeed
-public interface ActivityRepository <T extends ActivityModel> {
+public interface ActivityRepository {
+
+    @Select("SELECT * FROM activity NATURAL JOIN date_time")
+    @Results(value = {
+            @Result(property="id", column="activity_id"),
+            @Result(property="name", column="name"),
+            @Result(property="levelId", column="level_id"),
+            @Result(property="level", column="level_id", one=@One(select="findLevelById")),
+            @Result(property="dateTimeId", column="date_time_id"),
+            @Result(property="plannedStartDate", column="planned_start_date"),
+            @Result(property="actualStartDate", column="actual_start_date"),
+            @Result(property="deadline", column="deadline"),
+            @Result(property="actualEndDate", column="actual_end_date"),
+            @Result(property="subActivities", javaType=List.class, column="id",
+                    many=@Many(select="findSubActivitiesById"))})
+    List<ActivityModel> findAll();
+
+    @Select("SELECT name from activity_level WHERE level_id = #{id}")
+    String findLevelById(int id);
+
+    @Select("SELECT * FROM subproject_view sv INNER JOIN project_subproject ps ON sv.subproject_id=ps.subproject_id WHERE project_id = #{id}")
+    List<ActivityModel> findSubActivitiesById(long id);
+
+    @Insert("INSERT INTO activity_subactivity (activity_id, subactivity_id) VALUES (#{subActivityId}, #{activity.id})")
+    void addSubActivity(long subActivityId, ActivityModel activity);
 
     @Update("UPDATE date_time SET planned_start_date = #{plannedStartDate} WHERE date_time_id = #{dateTimeId}")
-    int updatePlannedStartDate(T activity);
+    int updatePlannedStartDate(ActivityModel activity);
 
     @Update("UPDATE date_time SET actual_start_date = #{actualStartDate} WHERE date_time_id = #{dateTimeId}")
-    int updateActualStartDate(T activity);
+    int updateActualStartDate(ActivityModel activity);
 
     @Update("UPDATE date_time SET deadline = #{deadline} WHERE date_time_id = #{dateTimeId}")
-    int updateDeadline(T activity);
+    int updateDeadline(ActivityModel activity);
 
     @Update("UPDATE date_time SET actual_end_date = #{actualEndDate} WHERE date_time_id = #{dateTimeId}")
-    int updateActualEndDate(T activity);
+    int updateActualEndDate(ActivityModel activity);
 
     @Insert("INSERT INTO date_time (date_time_id, planned_start_date, actual_start_date, deadline, actual_end_date)" +
             "VALUES (#{dateTimeId}, #{plannedStartDate}, #{actualStartDate}, #{deadline}, #{actualEndDate})")
     @Options(useGeneratedKeys = true, keyColumn = "date_time_id", keyProperty = "dateTimeId")
-    void createDateTime(T activity);
+    void createDateTime(ActivityModel activity);
 
-    @Insert("INSERT INTO activity (activity_id, name, date_time_id) VALUES (#{activityId}, #{name}, #{dateTimeId});")
-    @Options(useGeneratedKeys = true, keyColumn = "activity_id", keyProperty = "activityId")
-    void createActivity(T activity);
+    @Insert("INSERT INTO activity (activity_id, name, date_time_id, level_id) VALUES (#{id}, #{name}, #{dateTimeId}, #{levelId});")
+    @Options(useGeneratedKeys = true, keyColumn = "activity_id", keyProperty = "id")
+    void createActivity(ActivityModel activity);
+
+    @Select("SELECT level_id FROM activity_level where name LIKE #{name}")
+    int findLevelIdByName(String name);
 }

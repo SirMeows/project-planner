@@ -1,50 +1,40 @@
 package dk.kea.projectplanner.controllers;
 
 import dk.kea.projectplanner.models.ActivityModel;
-import dk.kea.projectplanner.models.ProjectModel;
-import dk.kea.projectplanner.models.SubProjectModel;
-import dk.kea.projectplanner.services.ActivityService;
-import dk.kea.projectplanner.services.ProjectService;
-import dk.kea.projectplanner.services.SubProjectService;
+import dk.kea.projectplanner.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.InvocationTargetException;
 
 @Controller
 @RequestMapping("/activity")
 public class ActivityController {
 
-    // ActivityService<?> activityService;
-    ProjectService projectService;
-    SubProjectService subProjectService;
-    ActivityModel subType;
+    ActivityService service;
 
-    public ActivityController(ProjectService projectService, SubProjectService subProjectService) {
-        this.projectService = projectService;
-        this.subProjectService = subProjectService;
+    public ActivityController(ActivityService service) {
+        this.service = service;
     }
 
     @GetMapping("/create")
-    public String showForm(Model model, @RequestParam(defaultValue = "ProjectModel") String type) {
-        try {
-            this.subType = (ActivityModel) Class.forName("dk.kea.projectplanner.models." + type).getDeclaredConstructor().newInstance();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
+    public String showForm(Model model, @RequestParam(defaultValue = "0") int level) {
+        ActivityModel activity = new ActivityModel(level); // Create activity at this level
+        if (level > 0) { // if not project
+            --level; // need parents
+            System.out.println(level);
+            model.addAttribute("activities", service.findAllByLevelId(level));
+            String parentName = service.levelNameByLevelId(level);
+            model.addAttribute("parentName", parentName);
         }
-        //System.out.println(subType instanceof ProjectModel);
-        //System.out.println(subType instanceof SubProjectModel);
-        model.addAttribute("type", type);
-        model.addAttribute("activity", subType);
+        model.addAttribute("activity", activity);
+        model.addAttribute("level", level);
         return "create-activity";
     }
 
-    // TODO: validation
+    // TODO: Add validation in all models used
     @PostMapping("/create")
-    public String create(@ModelAttribute("activity") ProjectModel activity){
-        System.out.println(activity instanceof ProjectModel);
-        projectService.createProject(activity);
+    public String createActivity(@ModelAttribute("activity") ActivityModel activity){
+        service.createActivity(activity);
         return "redirect:/gantt/";
     }
 }
