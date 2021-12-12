@@ -5,6 +5,10 @@ import dk.kea.projectplanner.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.groups.Default;
+import java.util.List;
 
 @Controller
 @RequestMapping("/activity")
@@ -31,10 +35,22 @@ public class ActivityController {
         return "create-activity";
     }
 
-    // TODO: Add validation in all models used
+    // TODO: Add validation
     @PostMapping("/create")
     public String createActivity(@ModelAttribute("activity") ActivityModel activity){
         service.createActivity(activity);
+        return "redirect:/gantt/";
+    }
+
+    @GetMapping("/delete")
+    public String deleteActivity(@RequestParam long id,
+                                 @RequestParam(defaultValue="0") long parent,
+                                 @RequestParam(defaultValue = "2") Integer zoom,
+                                 RedirectAttributes attr){
+        attr.addAttribute("parent", parent);
+        attr.addAttribute("zoom", zoom);
+        // delete activity and all subactivities recursively
+        service.deleteActivityAndSubActivities(id);
         return "redirect:/gantt/";
     }
 }

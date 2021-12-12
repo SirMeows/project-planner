@@ -20,9 +20,9 @@ public class GanttUtility {
     public ActivityCoordinates ac;
 
     public GanttUtility() {
-        zoomLevels.add(new ZoomLevel("day","EEEE dd-MM-uuuu","HH",24,1, ChronoUnit.DAYS));
-        zoomLevels.add(new ZoomLevel("week","'Week' w - uuuu","EEEE",168,24, ChronoUnit.WEEKS));
-        zoomLevels.add(new ZoomLevel("month","MMMM uuuu","dd",0,24, ChronoUnit.MONTHS));
+        zoomLevels.add(new ZoomLevel(0,"day","EEEE dd-MM-uuuu","HH",24,1, ChronoUnit.DAYS));
+        zoomLevels.add(new ZoomLevel(1,"week","'Week' w - uuuu","EEEE",168,24, ChronoUnit.WEEKS));
+        zoomLevels.add(new ZoomLevel(2,"month","MMMM uuuu","dd",0,24, ChronoUnit.MONTHS));
         ac = new ActivityCoordinates(this);
     }
 
@@ -33,7 +33,8 @@ public class GanttUtility {
                 && calcColumnSpan(activity) > 0;
     }
 
-    public void updateColumns() {
+    public void updateColumns(int zoom, List<ActivityModel> activities) {
+        calcStartAndEndColumn(activities);
         columns.clear();
         for (LocalDateTime date = startColumn; date.isBefore(endColumn); date = date.plusHours(1)) {
             columns.add(date);

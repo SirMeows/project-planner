@@ -19,6 +19,8 @@ public class GanttChartController {
     GanttUtility gu;
     ActivityService activityService;
     List<ActivityModel> activities;
+    long oldParent = 0;
+    String level = "Project";
 
     public GanttChartController(ActivityService activityService) {
         this.activityService = activityService;
@@ -28,21 +30,47 @@ public class GanttChartController {
     public void ganttUtility(Model model) {
         if(gu == null) gu = new GanttUtility();
         model.addAttribute("gu", gu);
-        activities = activityService.findAllByLevel("Project");
-        model.addAttribute("activities", activities);
+        activities = activityService.findAllByLevel(level);
     }
 
     // URL params is always string, but spring is casting to int before entering method
     @GetMapping("/")
-    public String gantt(@RequestParam(defaultValue = "2") int zoom, @RequestParam(defaultValue = "0") int page){
-        if (gu.currentZoomLevel == null || !gu.currentZoomLevel.equals(gu.zoomLevels.get(zoom))) {
-            gu.currentZoomLevel = gu.zoomLevels.get(zoom);
-            gu.calcStartAndEndColumn(activities);
-            gu.updateColumns();
-        }
-        gu.pagination.currentPage = page;
-        gu.updateColumnsInPage();
+    public String gantt(@RequestParam(defaultValue = "2") int zoom,
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "0") long parent, Model model){
+        setLevelAndActivities(parent, zoom);
 
+        // recalculate columns initially and when zoom or parent changes
+        if (gu.currentZoomLevel == null || !gu.currentZoomLevel.equals(gu.zoomLevels.get(zoom))
+                || parent != oldParent) {
+            oldParent = parent;
+            gu.currentZoomLevel = gu.zoomLevels.get(zoom);
+            if (!activities.isEmpty()) gu.updateColumns(zoom, activities);
+        }
+        if(!activities.isEmpty()) {
+            gu.pagination.currentPage = page;
+            gu.updateColumnsInPage();
+        }
+        model.addAttribute("level", level);
+        model.addAttribute("activities", activities);
         return "gantt-chart";
+    }
+
+    private void setLevelAndActivities(long parent, int zoom) {
+        // expose children if parent is set // Todo: error handling
+        if (parent > 0 && !activities.isEmpty()) {
+            if (!activityService.findByParentId(parent).isEmpty()) {
+                level = activities.get(0).getLevel();
+            } else { // no subactivities
+                int l = activityService.levelIdByName(level);
+                if (l < 4) l++;
+                level = activityService.levelNameByLevelId(l);
+            }
+            activities = activityService.findByParentId(parent);
+        } else { // parent or activities not set, use default level
+            level = "Project";
+            activities = activityService.findAllByLevel(level);
+        }
+
     }
 }

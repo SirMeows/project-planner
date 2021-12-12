@@ -29,8 +29,8 @@ CREATE TABLE activity_subactivity (
                           activity_id int NOT NULL AUTO_INCREMENT,
                           subactivity_id int NOT NULL,
                           PRIMARY KEY (activity_id, subactivity_id),
-                          FOREIGN KEY (`activity_id`) REFERENCES `activity` (`activity_id`),
-                          FOREIGN KEY (subactivity_id) REFERENCES activity(activity_id)
+                          FOREIGN KEY (`activity_id`) REFERENCES `activity` (`activity_id`) ON DELETE CASCADE,
+                          FOREIGN KEY (subactivity_id) REFERENCES activity(activity_id) ON DELETE CASCADE
 );
 
 --

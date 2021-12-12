@@ -20,16 +20,24 @@ public interface ActivityRepository {
             @Result(property="plannedStartDate", column="planned_start_date"),
             @Result(property="actualStartDate", column="actual_start_date"),
             @Result(property="deadline", column="deadline"),
-            @Result(property="actualEndDate", column="actual_end_date"),
-            @Result(property="subActivities", javaType=List.class, column="id",
-                    many=@Many(select="findSubActivitiesById"))})
+            @Result(property="actualEndDate", column="actual_end_date")})
     List<ActivityModel> findAll();
 
     @Select("SELECT name from activity_level WHERE level_id = #{id}")
     String findLevelById(int id);
 
-    @Select("SELECT * FROM subproject_view sv INNER JOIN project_subproject ps ON sv.subproject_id=ps.subproject_id WHERE project_id = #{id}")
-    List<ActivityModel> findSubActivitiesById(long id);
+    @Select("SELECT subactivity_id, name, level_id, date_time_id, planned_start_date, actual_start_date, deadline, actual_end_date FROM activity_subactivity a_s JOIN activity ON a_s.subactivity_id=activity.activity_id NATURAL JOIN date_time WHERE a_s.activity_id = #{id}")
+    @Results(value = {
+            @Result(property="id", column="subactivity_id"),
+            @Result(property="name", column="name"),
+            @Result(property="levelId", column="level_id"),
+            @Result(property="level", column="level_id", one=@One(select="findLevelById")),
+            @Result(property="dateTimeId", column="date_time_id"),
+            @Result(property="plannedStartDate", column="planned_start_date"),
+            @Result(property="actualStartDate", column="actual_start_date"),
+            @Result(property="deadline", column="deadline"),
+            @Result(property="actualEndDate", column="actual_end_date")})
+    List<ActivityModel> findSubActivitiesByParentId(long id);
 
     @Insert("INSERT INTO activity_subactivity (activity_id, subactivity_id) VALUES (#{subActivityId}, #{activity.id})")
     void addSubActivity(long subActivityId, ActivityModel activity);
@@ -57,4 +65,22 @@ public interface ActivityRepository {
 
     @Select("SELECT level_id FROM activity_level where name LIKE #{name}")
     int findLevelIdByName(String name);
+
+    @Select("SELECT * FROM activity NATURAL JOIN date_time where activity_id = #{id}")
+    @Results(value = {
+            @Result(property="id", column="activity_id"),
+            @Result(property="name", column="name"),
+            @Result(property="levelId", column="level_id"),
+            @Result(property="level", column="level_id", one=@One(select="findLevelById")),
+            @Result(property="dateTimeId", column="date_time_id"),
+            @Result(property="plannedStartDate", column="planned_start_date"),
+            @Result(property="actualStartDate", column="actual_start_date"),
+            @Result(property="deadline", column="deadline"),
+            @Result(property="actualEndDate", column="actual_end_date"),
+            @Result(property="subActivities", javaType=List.class, column="id",
+                    many=@Many(select="findSubActivitiesByParentId"))})
+    ActivityModel findById(long id);
+
+    @Delete("DELETE FROM activity WHERE activity_id = #{id}")
+    int deleteActivity(long id);
 }

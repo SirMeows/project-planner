@@ -25,6 +25,14 @@ public class ActivityService {
                 p -> p.getLevel().equals(name)).collect(Collectors.toList());
     }
 
+    public ActivityModel findById(long id) {
+        return repos.findById(id);
+    }
+    // returns subactivities for the provided id
+    public List<ActivityModel> findByParentId(long id) {
+        return repos.findSubActivitiesByParentId(id);
+    }
+
     public String levelNameByLevelId(int id) {
         return repos.findLevelById(id);
     }
@@ -51,6 +59,20 @@ public class ActivityService {
     }
 
     public int levelIdByName(String level) {
-    return repos.findLevelIdByName(level);
+        return repos.findLevelIdByName(level);
+    }
+
+    public int deleteActivity(long id) {
+        return repos.deleteActivity(id);
+    }
+    // delete activity and subactivities recursively
+    public int deleteActivityAndSubActivities(long id) {
+        List<ActivityModel> subActivities = findByParentId(id);
+        if (!subActivities.isEmpty()) {
+            for (ActivityModel activity : subActivities) {
+                deleteActivityAndSubActivities(activity.getId());
+            }
+        }
+        return deleteActivity(id);
     }
 }

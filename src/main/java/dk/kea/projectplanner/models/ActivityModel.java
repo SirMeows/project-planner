@@ -18,7 +18,6 @@ public class ActivityModel {
     private LocalDateTime actualEndDate;
     private long parentId;
     private int levelId; // decides type of activity and location in hierarchy
-    private List<ActivityModel> subActivities;
 
     public ActivityModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
         this.name = name;
@@ -47,14 +46,6 @@ public class ActivityModel {
 
     public void setLevelId(int levelId) {
         this.levelId = levelId;
-    }
-
-    public List<ActivityModel> getSubActivities() {
-        return subActivities;
-    }
-
-    public void setSubActivities(List<ActivityModel> subActivities) {
-        this.subActivities = subActivities;
     }
 
     public long getParentId() {

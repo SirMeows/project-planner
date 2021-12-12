@@ -7,12 +7,14 @@ import java.time.temporal.ChronoUnit;
 public class ZoomLevel {
 
     private String name;
+    private int id;
     // Headings for gantt chart depends on Zoom
     private DateTimeFormatter h1, h2;
     private int h1Span, h2Span;
     private ChronoUnit chronoUnit;
 
-    public ZoomLevel(String name, String h1Format, String h2Format, int h1Span, int h2Span, ChronoUnit cu) {
+    public ZoomLevel(int id, String name, String h1Format, String h2Format, int h1Span, int h2Span, ChronoUnit cu) {
+        this.id = id;
         this.name = name;
         this.h1 = DateTimeFormatter.ofPattern(h1Format);
         this.h2 = DateTimeFormatter.ofPattern(h2Format);
@@ -51,6 +53,14 @@ public class ZoomLevel {
             default:
         }
         return false;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

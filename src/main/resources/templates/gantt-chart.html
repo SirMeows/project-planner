@@ -2,22 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/header :: commonHead">
     <title id="title">Gantt Chart</title>
-    <style id="style">
-        .gantt span {
-            grid-row: 2 / span 50;
-        }
-
-        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-            color: #fff;
-            background-color: #367211;
-        }
-    </style>
 </head>
 <body>
 <header th:replace="fragments/header :: commonHeader(activePage='gantt-chart')"></header>
 <div class="container">
-    <div class="row alert alert-success m-0">
-        <div class="col navbar-brand h6 mb-0">[Project Name] - Gantt Chart</div>
+    <div class="row alert alert-primary m-0">
+        <div class="col navbar-brand h6 mb-0" th:text="'Gantt Chart - [user] - ' + ${level} +'s'"></div>
         <div class="col text-center d-flex justify-content-center">
             <ul class="nav nav-pills">
                 <li class="nav-item" th:each="zoomLevel, iterStat : ${gu.zoomLevels}">
@@ -26,16 +16,22 @@
                 </li>
             </ul>
         </div>
-        <div class="col text-end h6 mb-0 navbar-brand" th:text="'Grid span: '+${gu.columnsInPage.size()}+' hours'"></div>
+        <div class="col text-end h6 mb-0 navbar-brand" th:text="'column span: '+${gu.columnsInPage.size()}+' hours'"></div>
     </div>
     <div th:replace="fragments/gantt-chart :: gantt-chart(gu=${gu})"></div>
 
 </div>
 <footer th:replace="fragments/footer :: commonFooter"></footer>
+
 <script>
-    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
-    const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
+    $(function(){
+        $("[data-toggle=popover]").popover({
+            html : true,
+            content: function() {
+                var content = $(this).attr("data-popover-content");
+                return $(content).children(".popover-body").html();
+            }
+        });
     });
 </script>
 </body>

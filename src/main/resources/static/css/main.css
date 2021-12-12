@@ -1,1 +1,5 @@
 /* this is loaded in the head tag of all pages */
+
+.gantt span {
+    grid-row: 2 / span 50;
+}
