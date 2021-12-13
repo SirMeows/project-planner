@@ -42,7 +42,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `activity_subactivity` WRITE;
 /*!40000 ALTER TABLE `activity_subactivity` DISABLE KEYS */;
-INSERT INTO `activity_subactivity` VALUES (1,1),(1,2),(1,3),(2,4),(3,5),(3,15),(1,16),(1,17),(3,18),(3,19),(1,20);
+INSERT INTO `activity_subactivity` VALUES (1,4),(1,5),(1,6),(4,7),(4,8),(7,9),(7,10);
 /*!40000 ALTER TABLE `activity_subactivity` ENABLE KEYS */;
 UNLOCK TABLES;
 

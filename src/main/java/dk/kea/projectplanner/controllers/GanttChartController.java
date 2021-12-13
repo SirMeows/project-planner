@@ -20,7 +20,7 @@ public class GanttChartController {
     ActivityService activityService;
     List<ActivityModel> activities;
     long oldParent = 0;
-    String level = "Project";
+    String level;
 
     public GanttChartController(ActivityService activityService) {
         this.activityService = activityService;
@@ -38,7 +38,8 @@ public class GanttChartController {
     public String gantt(@RequestParam(defaultValue = "2") int zoom,
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "0") long parent, Model model){
-        setLevelAndActivities(parent, zoom);
+
+        setLevelAndActivities(parent);
 
         // recalculate columns initially and when zoom or parent changes
         if (gu.currentZoomLevel == null || !gu.currentZoomLevel.equals(gu.zoomLevels.get(zoom))
@@ -56,14 +57,15 @@ public class GanttChartController {
         return "gantt-chart";
     }
 
-    private void setLevelAndActivities(long parent, int zoom) {
+    private void setLevelAndActivities(long parent) {
         // expose children if parent is set // Todo: error handling
         if (parent > 0 && !activities.isEmpty()) {
             if (!activityService.findByParentId(parent).isEmpty()) {
-                level = activities.get(0).getLevel();
+                level = activityService.findByParentId(parent).get(0).getLevel();
+                // System.out.println(level);
             } else { // no subactivities
                 int l = activityService.levelIdByName(level);
-                if (l < 4) l++;
+                if (l < 3) l++;
                 level = activityService.levelNameByLevelId(l);
             }
             activities = activityService.findByParentId(parent);

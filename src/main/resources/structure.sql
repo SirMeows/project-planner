@@ -1,8 +1,34 @@
 CREATE DATABASE IF NOT EXISTS `project_planner` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `project_planner`;
 
--- Table structure for table `activity`
+
 --
+-- Table structure for table `date_time`
+--
+
+DROP TABLE IF EXISTS `activity_level`;
+CREATE TABLE activity_level (
+                                level_id int NOT NULL,
+                                name varchar(45) NOT NULL,
+                                PRIMARY KEY (level_id)
+);
+
+DROP TABLE IF EXISTS `date_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `date_time` (
+                             `date_time_id` int NOT NULL AUTO_INCREMENT,
+                             `planned_start_date` datetime DEFAULT NULL,
+                             `actual_start_date` datetime DEFAULT NULL,
+                             `deadline` datetime DEFAULT NULL,
+                             `actual_end_date` datetime DEFAULT NULL,
+                             PRIMARY KEY (`date_time_id`),
+                             UNIQUE KEY `date_time_id_UNIQUE` (`date_time_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+-- Table structure for table `activity`
 
 DROP TABLE IF EXISTS activity;
 CREATE TABLE activity (
@@ -17,12 +43,7 @@ CREATE TABLE activity (
   FOREIGN KEY (level_id) REFERENCES activity_level(level_id)
 );
 
-DROP TABLE IF EXISTS `activity_level`;
-CREATE TABLE activity_level (
-    level_id int NOT NULL,
-    name varchar(45) NOT NULL,
-    PRIMARY KEY (level_id)
-);
+
 
 DROP TABLE IF EXISTS activity_subactivity;
 CREATE TABLE activity_subactivity (
@@ -32,24 +53,6 @@ CREATE TABLE activity_subactivity (
                           FOREIGN KEY (`activity_id`) REFERENCES `activity` (`activity_id`) ON DELETE CASCADE,
                           FOREIGN KEY (subactivity_id) REFERENCES activity(activity_id) ON DELETE CASCADE
 );
-
---
--- Table structure for table `date_time`
---
-
-DROP TABLE IF EXISTS `date_time`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `date_time` (
-  `date_time_id` int NOT NULL AUTO_INCREMENT,
-  `planned_start_date` datetime DEFAULT NULL,
-  `actual_start_date` datetime DEFAULT NULL,
-  `deadline` datetime DEFAULT NULL,
-  `actual_end_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`date_time_id`),
-  UNIQUE KEY `date_time_id_UNIQUE` (`date_time_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Temporary view structure for view `project_view`
