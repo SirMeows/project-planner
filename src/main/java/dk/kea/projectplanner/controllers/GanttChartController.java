@@ -71,6 +71,5 @@ public class GanttChartController {
             level = "Project";
             activities = activityService.findAllByLevel(level);
         }
-
     }
 }
