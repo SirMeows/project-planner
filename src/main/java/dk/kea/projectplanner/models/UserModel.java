@@ -10,8 +10,6 @@ public class UserModel extends PersonModel {
     @ValidPassword
     private String password;
 
-    private boolean isAdmin;
-
     private PersonModel personModel;
 
     public UserModel(String userName, String password, PersonModel personModel) {
