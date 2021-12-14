@@ -18,7 +18,7 @@
                     <!-- pagination arrows -->
                     <div style="width: 44px;" th:class="(${gu.pagination.currentPage > 0}? 'page-item ': '')">
                         <a th:if="${gu.pagination.currentPage > 0}" class="page-link fs-3 py-0 rounded" aria-label="Previous"
-                           th:href="@{/gantt/(zoom=${gu.currentZoomLevel.getId()}, page=${ gu.pagination.currentPage-1 })}">
+                           th:href="@{/gantt/(zoom=${gu.currentZoomLevel.getId()}, page=${ gu.pagination.currentPage -1 })}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </div>

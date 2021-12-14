@@ -51,7 +51,9 @@ public class ActivityService {
     public void createActivity(ActivityModel activity) {
         repos.createDateTime(activity);
         repos.createActivity(activity);
-        addSubActivity(activity.getParentId(), activity);
+        // Project has no parent activity
+        if ( !activity.getLevel().equals("Project") )
+            addSubActivity(activity.getParentId(), activity);
     }
 
     public void addSubActivity(long activityId, ActivityModel subActivity) {

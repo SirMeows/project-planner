@@ -16,11 +16,13 @@ import java.util.List;
 @RequestMapping("/gantt")
 public class GanttChartController {
 
+    // TODO: Refactor: move logic to ganttChartService
+
     GanttUtility gu;
     ActivityService activityService;
     List<ActivityModel> activities;
     long oldParent = 0;
-    String level;
+    String level = "Project";
 
     public GanttChartController(ActivityService activityService) {
         this.activityService = activityService;

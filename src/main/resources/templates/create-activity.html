@@ -24,7 +24,6 @@
         <div th:unless="${parentName==null}" class="mt-4 mb-4">
             <label for="activity" th:text="'Choose '+${parentName}"></label>
             <select th:field="*{parentId}" id="activity">
-                <!--option th:if="${activities.isEmpty()}" th:text="${' '}"></option-->
                 <option th:each="activity : ${activities}" th:value="${activity.getId()}" th:text="${activity.getName()}"></option>
             </select>
         </div>

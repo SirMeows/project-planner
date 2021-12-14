@@ -117,25 +117,7 @@ public class GanttUtility {
     public long calcColumnOffset(ActivityModel activity) {
         return ac.calcColumnOffset(activity, pagination.currentPage);
     }
-
     public int hoursInMonth(LocalDateTime dateTime) {
         return dateTime.toLocalDate().lengthOfMonth()*24;
     }
-/* // TODO: Move this method to a test
-    public void addPseudoActivities() {
-        // TODO: implement sorting after startdate
-        LocalDateTime[] start = new LocalDateTime[]{
-                LocalDateTime.of(2021,12,1,0,0),
-                LocalDateTime.of(2021,12,2,0,0),
-                LocalDateTime.of(2021,12,3,0,0)
-        };
-        LocalDateTime[] end = new LocalDateTime[]{
-                LocalDateTime.of(2021,12,4,1,0),
-                LocalDateTime.of(2021,12,5,0,0),
-                LocalDateTime.of(2022,1,6,1,0)
-        };
-        for (int i = 0; i<3; i++) {
-            activities.add(new ProjectModel("Activity "+ (i+1), start[i], end[i]));
-        }
-    } */
 }
