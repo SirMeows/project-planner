@@ -3,7 +3,6 @@ package dk.kea.projectplanner.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class ActivityModel {
     private long id;
@@ -18,11 +17,13 @@ public class ActivityModel {
     private LocalDateTime actualEndDate;
     private long parentId;
     private int levelId; // decides type of activity and location in hierarchy
+    private int taskSize; // total task size estimate in hours
 
-    public ActivityModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline) {
+    public ActivityModel(String name, LocalDateTime plannedStartDate, LocalDateTime deadline, int taskSize) {
         this.name = name;
         this.plannedStartDate = plannedStartDate;
         this.deadline = deadline;
+        this.taskSize = taskSize;
     }
 
     public ActivityModel() {
@@ -112,14 +113,13 @@ public class ActivityModel {
         this.actualEndDate = actualEndDate;
     }
 
-/* TODO: update this
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ActivityModel activityModel = (ActivityModel) o;
-        return id == activityModel.id && activityId == activityModel.activityId && dateTimeId == activityModel.dateTimeId && Objects.equals(name, activityModel.name) && Objects.equals(plannedStartDate, activityModel.plannedStartDate) && Objects.equals(actualStartDate, activityModel.actualStartDate) && Objects.equals(deadline, activityModel.deadline) && Objects.equals(actualEndDate, activityModel.actualEndDate);
-    } */
+    public int getTaskSize() {
+        return taskSize;
+    }
+
+    public void setTaskSize(int taskSize) {
+        this.taskSize = taskSize;
+    }
 
 }
 
