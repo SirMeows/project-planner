@@ -16,7 +16,8 @@ import java.util.List;
 @RequestMapping("/gantt")
 public class GanttChartController {
 
-    // TODO: Refactor: move logic to ganttChartService
+    // TODO: Refactor: move logic to ganttChartService and use DTO for params to cleanup
+    //  This Controller should have been just a level of indirection
 
     GanttUtility gu;
     ActivityService activityService;
@@ -56,11 +57,12 @@ public class GanttChartController {
         }
         model.addAttribute("level", level);
         model.addAttribute("activities", activities);
+        model.addAttribute("activityService", activityService);
         return "gantt-chart";
     }
 
     private void setLevelAndActivities(long parent) {
-        // expose children if parent is set // Todo: error handling
+        // expose children if parent is set
         if (parent > 0 && !activities.isEmpty()) {
             if (!activityService.findByParentId(parent).isEmpty()) {
                 level = activityService.findByParentId(parent).get(0).getLevel();

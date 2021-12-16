@@ -12,10 +12,10 @@
         <div class="mt-4 mb-4">
             <label for="level">Choose type:</label>
             <select onchange="this.form.submit()" name="level" id="level">
-                <option value="0" th:selected="${level.equals('0')}">Project</option>
-                <option value="1" th:selected="${level.equals('1')}">SubProject</option>
-                <option value="2" th:selected="${level.equals('2')}">Task</option>
-                <option value="3" th:selected="${level.equals('3')}">SubTask</option>
+                <option value="0" th:selected="${(level == 0)}">Project</option>
+                <option value="1" th:selected="${(level == 1)}">SubProject</option>
+                <option value="2" th:selected="${(level == 2)}">Task</option>
+                <option value="3" th:selected="${(level == 3)}">SubTask</option>
             </select>
         </div>
     </form>
@@ -33,14 +33,18 @@
         </div>
         <div class="mt-4 mb-4">
             <label for="start" class="form-label">Start date:</label>
-            <input id="start" th:field="*{plannedStartDate}" type="datetime-local">
+            <input id="start" th:field="*{plannedStartDate}" type="datetime-local" />
         </div>
         <div class="mt-4 mb-4">
             <label for="end" class="form-label">End date:</label>
-            <input id="end" th:field="*{deadline}" type="datetime-local">
+            <input id="end" th:field="*{deadline}" type="datetime-local" />
+        </div>
+        <div class="mt-4 mb-4">
+            <label for="task-size" class="form-label">Estimated time required:</label>
+            <input th:field="*{taskSize}" class="form-control" id="task-size" type="number" />
         </div>
         <div class="mb-2">
-            <input type="hidden" th:field="*{levelId}" th:value="${level}">
+            <input type="hidden" th:field="*{levelId}" th:value="${level}" />
             <input type="submit" class="btn btn-primary" />
         </div>
 

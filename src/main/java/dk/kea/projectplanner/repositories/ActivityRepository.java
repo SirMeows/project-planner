@@ -20,7 +20,8 @@ public interface ActivityRepository {
             @Result(property="plannedStartDate", column="planned_start_date"),
             @Result(property="actualStartDate", column="actual_start_date"),
             @Result(property="deadline", column="deadline"),
-            @Result(property="actualEndDate", column="actual_end_date")})
+            @Result(property="actualEndDate", column="actual_end_date"),
+            @Result(property="taskSize", column="task_size")})
     List<ActivityModel> findAll();
 
     @Select("SELECT name from activity_level WHERE level_id = #{id}")
@@ -36,7 +37,8 @@ public interface ActivityRepository {
             @Result(property="plannedStartDate", column="planned_start_date"),
             @Result(property="actualStartDate", column="actual_start_date"),
             @Result(property="deadline", column="deadline"),
-            @Result(property="actualEndDate", column="actual_end_date")})
+            @Result(property="actualEndDate", column="actual_end_date"),
+            @Result(property="taskSize", column="task_size")})
     List<ActivityModel> findSubActivitiesByParentId(long id);
 
     @Insert("INSERT INTO activity_subactivity (activity_id, subactivity_id) VALUES (#{subActivityId}, #{activity.id})")
@@ -59,7 +61,7 @@ public interface ActivityRepository {
     @Options(useGeneratedKeys = true, keyColumn = "date_time_id", keyProperty = "dateTimeId")
     void createDateTime(ActivityModel activity);
 
-    @Insert("INSERT INTO activity (activity_id, name, date_time_id, level_id) VALUES (#{id}, #{name}, #{dateTimeId}, #{levelId});")
+    @Insert("INSERT INTO activity (activity_id, name, date_time_id, level_id, task_size) VALUES (#{id}, #{name}, #{dateTimeId}, #{levelId}, #{taskSize});")
     @Options(useGeneratedKeys = true, keyColumn = "activity_id", keyProperty = "id")
     void createActivity(ActivityModel activity);
 
@@ -77,8 +79,7 @@ public interface ActivityRepository {
             @Result(property="actualStartDate", column="actual_start_date"),
             @Result(property="deadline", column="deadline"),
             @Result(property="actualEndDate", column="actual_end_date"),
-            @Result(property="subActivities", javaType=List.class, column="id",
-                    many=@Many(select="findSubActivitiesByParentId"))})
+            @Result(property="taskSize", column="task_size")})
     ActivityModel findById(long id);
 
     @Delete("DELETE FROM activity WHERE activity_id = #{id}")

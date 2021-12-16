@@ -11,7 +11,7 @@
         <div class="col text-center d-flex justify-content-center">
             <ul class="nav nav-pills">
                 <li class="nav-item" th:each="zoomLevel, iterStat : ${gu.zoomLevels}">
-                    <a th:text="${zoomLevel.getName()}" th:href="@{/gantt/(zoom=${iterStat.index})}"
+                    <a th:text="${zoomLevel.getName()}" th:href="@{/gantt/(zoom=${iterStat.index},parent=${param?.parent})}"
                        class="nav-link pt-1 pb-1" th:classappend="${gu.currentZoomLevel == gu.zoomLevels.get(iterStat.index)} ? 'active'">day/week/month</a>
                 </li>
             </ul>
@@ -27,6 +27,10 @@
     $(function(){
         $("[data-toggle=popover]").popover({
             html : true,
+            title: function() {
+                var title = $(this).attr("data-popover-title");
+                return $(title).children(".popover-title").html();
+            },
             content: function() {
                 var content = $(this).attr("data-popover-content");
                 return $(content).children(".popover-body").html();

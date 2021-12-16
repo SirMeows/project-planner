@@ -2,6 +2,7 @@ package dk.kea.projectplanner.services;
 
 import dk.kea.projectplanner.models.ActivityModel;
 import dk.kea.projectplanner.repositories.ActivityRepository;
+import dk.kea.projectplanner.util.ManhourCalculator;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,6 @@ public class ActivityService {
         return repos.findAll();
     }
 
-
     public List<ActivityModel> findAllByLevel(String name) {
         return repos.findAll().stream().filter(
                 p -> p.getLevel().equals(name)).collect(Collectors.toList());
@@ -28,7 +28,7 @@ public class ActivityService {
     public ActivityModel findById(long id) {
         return repos.findById(id);
     }
-    // returns subactivities for the provided id
+    // returns sub-activities for the provided id
     public List<ActivityModel> findByParentId(long id) {
         return repos.findSubActivitiesByParentId(id);
     }
@@ -41,7 +41,7 @@ public class ActivityService {
         return repos.findAll().stream().filter(p -> p.getLevelId() == id).collect(Collectors.toList());
     }
 
-    void updateDateTime(ActivityModel activity) {
+    public void updateDateTime(ActivityModel activity) {
         repos.updateActualEndDate(activity);
         repos.updateDeadline(activity);
         repos.updateActualStartDate(activity);
@@ -52,7 +52,7 @@ public class ActivityService {
         repos.createDateTime(activity);
         repos.createActivity(activity);
         // Project has no parent activity
-        if ( !activity.getLevel().equals("Project") )
+        if ( ! (activity.getLevelId() == 0)) // if sub-activity
             addSubActivity(activity.getParentId(), activity);
     }
 
@@ -76,5 +76,9 @@ public class ActivityService {
             }
         }
         return deleteActivity(id);
+    }
+
+    public int calcManHours(ActivityModel activity) {
+        return ManhourCalculator.calculateManhoursForSingleActivity(activity);
     }
 }

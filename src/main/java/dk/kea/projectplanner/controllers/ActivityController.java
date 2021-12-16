@@ -7,9 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.groups.Default;
-import java.util.List;
-
 @Controller
 @RequestMapping("/activity")
 public class ActivityController {
@@ -24,10 +21,8 @@ public class ActivityController {
     public String showForm(Model model, @RequestParam(defaultValue = "0") int level) {
         ActivityModel activity = new ActivityModel(level); // Create activity at this level
         if (level > 0) { // if not project
-            --level; // need parents
-            System.out.println(level);
-            model.addAttribute("activities", service.findAllByLevelId(level));
-            String parentName = service.levelNameByLevelId(level);
+            model.addAttribute("activities", service.findAllByLevelId(level-1));
+            String parentName = service.levelNameByLevelId(level-1);
             model.addAttribute("parentName", parentName);
         }
         model.addAttribute("activity", activity);

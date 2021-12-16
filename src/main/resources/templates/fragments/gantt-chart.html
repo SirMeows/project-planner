@@ -18,7 +18,7 @@
                     <!-- pagination arrows -->
                     <div style="width: 44px;" th:class="(${gu.pagination.currentPage > 0}? 'page-item ': '')">
                         <a th:if="${gu.pagination.currentPage > 0}" class="page-link fs-3 py-0 rounded" aria-label="Previous"
-                           th:href="@{/gantt/(zoom=${gu.currentZoomLevel.getId()}, page=${ gu.pagination.currentPage -1 })}">
+                           th:href="@{/gantt/(zoom=${gu.currentZoomLevel.getId()}, page=${ gu.pagination.currentPage -1 },parent=${param?.parent})}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </div>
@@ -26,7 +26,7 @@
                     <div th:text="${hour.format(gu.currentZoomLevel.getH1())}"></div>
                     <div style="width: 44px;" th:class="(${gu.endPage()}? '': 'page-item ')">
                         <a th:unless="${gu.endPage()}" class="page-link fs-3 py-0 rounded" aria-label="Next"
-                           th:href="@{/gantt/(zoom=${gu.currentZoomLevel.getId()}, page=${ gu.pagination.currentPage+1 })}">
+                           th:href="@{/gantt/(zoom=${gu.currentZoomLevel.getId()}, page=${ gu.pagination.currentPage+1 },parent=${param?.parent})}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </div>
@@ -43,8 +43,8 @@
         <!-- show activities for selected project/subproject/task -->
         <th:block th:each="activity, iterStat : ${activities}">
             <!-- check if activity is on page -->
-            <button th:if="${gu.activityOnPage(activity)}"
-                    class="btn fs-6 mb-2 rounded-pill text-white" th:text="${activity.getName()}"
+            <button th:if="${gu.activityOnPage(activity)}" class="btn fs-6 mb-2 rounded-pill text-white"
+                    th:text="${activity.getName()}" th:data-popover-title="'#a'+${activity.getId()}"
                     data-toggle="popover" th:data-popover-content="'#a'+${activity.getId()}" data-bs-placement="bottom"
                     th:style="'background:'+${gu.colors[iterStat.index % 9]}+';grid-row:'+${iterStat.count + 2}+
                       ';grid-column:'+${gu.calcColumnOffset(activity)+1}+' / span '+
@@ -52,12 +52,15 @@
             </button>
         </th:block>
     </div>
+    <!-- This defines the popover menu -->
     <div th:each="activity : ${activities}" class="d-none" th:id="'a'+${activity.getId()}">
+        <div class="popover-title text-center">
+            <span th:text="'Manhours / day: ' + ${activityService.calcManHours(activity)}"></span>
+        </div>
         <div class="popover-body">
-            <a class="btn btn-success me-1" th:href="@{/gantt/(parent=${activity.getId()})}" role="button">Show subactivities</a>
-            <a class="btn btn-danger" role="button"
-               th:href="
-               @{/activity/delete(id=${activity.getId()},parent=${param?.parent})}"
+            <a class="btn btn-success me-1 px-2" th:href="@{/gantt/(parent=${activity.getId()})}" role="button">Show sub-activities</a>
+            <a class="btn btn-danger px-2" role="button"
+               th:href="@{/activity/delete(id=${activity.getId()},parent=${param?.parent})}"
             >Delete</a>
         </div>
     </div>
