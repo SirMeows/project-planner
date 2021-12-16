@@ -1,3 +1,8 @@
+/*
+Author He
+13.12.2021
+ */
+
 package dk.kea.projectplanner.controllers;
 
 import org.springframework.stereotype.Controller;
@@ -17,13 +22,4 @@ public class LoginController {
         model.addAttribute("error",true);
         return "login";
     }
-
-/*  How does this part work?
-    @GetMapping("/username")
-    @ResponseBody
-    public String currentUserName(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        System.out.println("User has authorities: " + userDetails.getAuthorities());
-        return userDetails.getPassword();
-    }*/
 }

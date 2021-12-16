@@ -1,7 +1,11 @@
+/*
+Author He
+14.12.2021
+ */
+
 package dk.kea.projectplanner.util;
 
 import dk.kea.projectplanner.models.ActivityModel;
-import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
