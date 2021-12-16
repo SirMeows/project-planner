@@ -1,4 +1,8 @@
-/* this is loaded in the head tag of all pages */
+/*
+ Author Peter
+ 1.12.2021
+
+ this is loaded in the head tag of all pages */
 
 .gantt span {
     grid-row: 2 / span 50;

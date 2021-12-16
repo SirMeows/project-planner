@@ -1,3 +1,8 @@
+/*
+Author He
+30.11.2021
+ */
+
 package dk.kea.projectplanner.util;
 
 import dk.kea.projectplanner.models.ActivityModel;

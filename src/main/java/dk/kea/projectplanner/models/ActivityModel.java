@@ -1,3 +1,8 @@
+/*
+Author Peter & He
+14.12.2021
+ */
+
 package dk.kea.projectplanner.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
