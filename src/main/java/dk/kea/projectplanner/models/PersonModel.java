@@ -1,3 +1,8 @@
+/*
+Author He
+13.12.2021
+ */
+
 package dk.kea.projectplanner.models;
 
 public class PersonModel {
