@@ -41,7 +41,7 @@ public class ZoomLevel {
         }
         return -1;
     }
-
+    // To draw the boundaries for the top heading depending on zoom
     public boolean evalCondition(LocalDateTime hour){
         switch(this.name) {
             case "day":
