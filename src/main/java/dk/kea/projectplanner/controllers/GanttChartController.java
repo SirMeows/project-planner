@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/gantt")
 public class GanttChartController {
 
-    // TODO: Refactor: move logic to ganttChartService and use DTO for params to cleanup
+    // TODO: Refactor: move logic to ganttChartService and use DTOs for params to cleanup
     //  This Controller should have been just a level of indirection
 
     GanttUtility gu;
@@ -62,6 +62,7 @@ public class GanttChartController {
         }
         model.addAttribute("level", level);
         model.addAttribute("activities", activities);
+        // Bad practice to expose the service to the view, but no time to fix
         model.addAttribute("activityService", activityService);
         return "gantt-chart";
     }

@@ -1,9 +1,8 @@
 -- Author He & Peter
 -- 11.12.2021
 
-CREATE DATABASE IF NOT EXISTS `project_planner` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+-- CREATE DATABASE IF NOT EXISTS `project_planner`;
 USE `project_planner`;
-
 
 --
 -- Table structure for table `date_time`
@@ -17,8 +16,6 @@ CREATE TABLE activity_level (
 );
 
 DROP TABLE IF EXISTS `date_time`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `date_time` (
                              `date_time_id` int NOT NULL AUTO_INCREMENT,
                              `planned_start_date` datetime NOT NULL,
@@ -27,8 +24,7 @@ CREATE TABLE `date_time` (
                              `actual_end_date` datetime DEFAULT NULL,
                              PRIMARY KEY (`date_time_id`),
                              UNIQUE KEY `date_time_id_UNIQUE` (`date_time_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) AUTO_INCREMENT=49;
 
 -- Table structure for table `activity`
 
@@ -56,24 +52,19 @@ CREATE TABLE activity_subactivity (
 );
 
 DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `user_id` int NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table `person`
 --
 
 DROP TABLE IF EXISTS `person`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `person` (
                           `person_id` int NOT NULL,
                           `first_name` varchar(45) NOT NULL,
@@ -82,6 +73,5 @@ CREATE TABLE `person` (
                           PRIMARY KEY (`person_id`),
                           KEY `fk_person_user_idx` (`user_id`),
                           CONSTRAINT `fk_person_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB;
 
