@@ -1,6 +1,6 @@
 -- Author He & Peter
 -- 11.12.2021
-USE `project_planner`;
+-- USE `project_planner`;
 -- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
 -- Host: localhost    Database: project_planner

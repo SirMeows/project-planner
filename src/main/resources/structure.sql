@@ -2,7 +2,7 @@
 -- 11.12.2021
 
 -- CREATE DATABASE IF NOT EXISTS `project_planner`;
-USE `project_planner`;
+-- USE `project_planner`;
 
 --
 -- Table structure for table `date_time`
